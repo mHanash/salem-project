@@ -14,7 +14,6 @@ class LineBudgetingController extends Controller
      */
     public function index()
     {
-        //
     }
 
     /**

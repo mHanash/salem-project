@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Budgeting;
+use App\Models\Currency;
+use App\Models\Status;
+use App\Models\Year;
 use Illuminate\Http\Request;
 
 class BudgetingController extends Controller
@@ -14,7 +17,16 @@ class BudgetingController extends Controller
      */
     public function index()
     {
-        //
+        $budgetings = Budgeting::all();
+        $status = Status::all();
+        $currencies = Currency::all();
+        $years = Year::all();
+        return view('ui.budgeting.all', [
+            'budgetings' => $budgetings,
+            'status' => $status,
+            'currencies' => $currencies,
+            'years' => $years,
+        ]);
     }
 
     /**
@@ -35,7 +47,16 @@ class BudgetingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if ($budgeting = Budgeting::create([
+            'description' => $request->description,
+            'start_year_id' => $request->startYear,
+            'end_year_id' => $request->endYear,
+            'currency_id' => $request->currency,
+            'status_id' => $request->status,
+        ])) {
+            return redirect()->back()->with('success', 'Elément ajouté');
+        }
+        return redirect()->back()->with('fail', 'Une erreur est survenue lors de l\'enregistrement');
     }
 
     /**
@@ -44,9 +65,18 @@ class BudgetingController extends Controller
      * @param  \App\Models\Budgeting  $budgeting
      * @return \Illuminate\Http\Response
      */
-    public function show(Budgeting $budgeting)
+    public function show(Request $request, Budgeting $budgeting)
     {
-        //
+        $status = Status::all();
+        $currencies = Currency::all();
+        $years = Year::all();
+        $budgeting = Budgeting::find($request->id);
+        return view('ui.budgeting.show', [
+            'budgeting' => $budgeting,
+            'status' => $status,
+            'currencies' => $currencies,
+            'years' => $years,
+        ]);
     }
 
     /**
@@ -69,7 +99,18 @@ class BudgetingController extends Controller
      */
     public function update(Request $request, Budgeting $budgeting)
     {
-        //
+        $budgeting = Budgeting::find($request->id);
+        if ($budgeting->update([
+            'description' => $request->description,
+            'start_year_id' => $request->startYear,
+            'end_year_id' => $request->endYear,
+            'currency_id' => $request->currency,
+            'status_id' => $request->status,
+        ])) { {
+                return redirect()->route('budgetings')->with('success', 'Elément modifié');
+            }
+            return redirect()->route('budgetings')->with('fail', 'Une erreur est survenue lors de la modification');
+        }
     }
 
     /**
@@ -78,8 +119,13 @@ class BudgetingController extends Controller
      * @param  \App\Models\Budgeting  $budgeting
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Budgeting $budgeting)
+    public function destroy(Request $request, Budgeting $budgeting)
     {
-        //
+        $budgeting = Budgeting::find($request->id);
+        if ($budgeting->delete()) { {
+                return redirect()->route('budgetings')->with('success', 'Elément supprimé');
+            }
+            return redirect()->route('budgetings')->with('fail', 'Une erreur est survenue lors de la suppression');
+        }
     }
 }

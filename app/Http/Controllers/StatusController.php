@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Year;
+use App\Models\Status;
 use Illuminate\Http\Request;
 
-class YearController extends Controller
+class StatusController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,11 +14,11 @@ class YearController extends Controller
      */
     public function index()
     {
-        $years = Year::all();
-        return view('ui.year.all', [
-            'years' => $years,
+        $statuses = Status::all();
+        return view('ui.status.all', [
+            'statuses' => $statuses,
             'show' => false,
-            'year' => null,
+            'currency' => null,
         ]);
     }
 
@@ -40,14 +40,8 @@ class YearController extends Controller
      */
     public function store(Request $request)
     {
-
-        $values = explode("-", $request->year);
-
-        if (count(Year::where('year', '=', $values[0] * 1)->get()) > 0) {
-            return redirect()->back()->with('fail', 'Une année n\'est enregistrée qu\'une fois');
-        }
-        if ($year = Year::create([
-            'year' => $values[0],
+        if ($status = Status::create([
+            'name' => $request->name,
         ])) {
             return redirect()->back()->with('success', 'Elément ajouté');
         }
@@ -57,27 +51,27 @@ class YearController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Year  $year
+     * @param  \App\Models\Status  $status
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, Year $year)
+    public function show(Request $request, Status $status)
     {
-        $year = Year::find($request->id);
-        $years = Year::all();
-        return view('ui.year.all', [
-            'years' => $years,
+        $status = Status::find($request->id);
+        $statuses = Status::all();
+        return view('ui.status.all', [
+            'statuses' => $statuses,
             'show' => true,
-            'year' => $year,
+            'status' => $status,
         ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Year  $year
+     * @param  \App\Models\Status  $status
      * @return \Illuminate\Http\Response
      */
-    public function edit(Year $year)
+    public function edit(Status $status)
     {
         //
     }
@@ -86,19 +80,14 @@ class YearController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Year  $year
+     * @param  \App\Models\Status  $status
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Year $year)
+    public function update(Request $request, Status $status)
     {
-        $year = Year::find($request->id);
-        $values = explode("-", $request->year);
-
-        if (count(Year::where('year', '=', $values[0] * 1)->get()) > 0) {
-            return redirect()->back()->with('fail', 'Vous n\'avez pas changé de valeur, soit cette année existe déjà!');
-        }
-        if ($year->update([
-            'year' => $values[0],
+        $status = Status::find($request->id);
+        if ($status->update([
+            'name' => $request->name,
         ])) {
             return redirect()->back()->with('success', 'Elément modifié');
         }
@@ -108,14 +97,14 @@ class YearController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Year  $year
+     * @param  \App\Models\Status  $status
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, Year $year)
+    public function destroy(Request $request, Status $status)
     {
-        $year = Year::find($request->id);
-        if ($year->delete()) {
-            return redirect()->route('years')->with('success', 'Elément supprimé');
+        $status = Status::find($request->id);
+        if ($status->delete()) {
+            return redirect()->back()->with('success', 'Elément supprimé');
         }
         return redirect()->back()->with('fail', 'Une erreur est survenue lors de la suppression');
     }

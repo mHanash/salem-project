@@ -40,8 +40,14 @@ class TypeRubriqueController extends Controller
      */
     public function store(Request $request)
     {
+        $stateVal = false;
+        if ($request->state == "1") {
+            $stateVal = true;
+        }
+
         if ($type = TypeRubrique::create([
-            'name' => $request->name
+            'name' => $request->name,
+            'state' => $stateVal,
         ])) {
             return redirect()->back()->with('success', 'Elément ajouté');
         }
@@ -87,7 +93,8 @@ class TypeRubriqueController extends Controller
     {
         $typeRubrique = TypeRubrique::find($request->id);
         if ($typeRubrique->update([
-            'name' => $request->name
+            'name' => $request->name,
+            'state' => $request->state == "1" ? true : false,
         ])) {
             return redirect()->back()->with('success', 'Elément modifié');
         }

@@ -20,7 +20,7 @@
                 <div class="row align-items-center" style="margin-bottom: 10px">
                     <div class="col-md-5">
                         <h4 class="page-title">
-                            TYPE DE COMPTE
+                            ARCHIVE BUDGETS
                         </h4>
                     </div>
                     <div class="col-md-7">
@@ -31,14 +31,17 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-9">
-                    @if (count($types) > 0)
-                        <table class="table table-sm">
+                <div class="col">
+                    @if (count($budgetings) > 0)
+                        <table class="table table-sm responsive">
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>
-                                    <th scope="col">Intitulé</th>
+                                    <th scope="col">Desciption</th>
+                                    <th scope="col">Année Début</th>
+                                    <th scope="col">Année Fin</th>
                                     <th scope="col">Status</th>
+                                    <th scope="col">Dévise</th>
                                     <th scope="col">Actions</th>
                                 </tr>
                             </thead>
@@ -46,25 +49,24 @@
                                 @php
                                     $i = 0;
                                 @endphp
-                                @foreach ($types as $item)
+                                @foreach ($budgetings as $item)
                                     @php
                                         $i++;
                                     @endphp
                                     <tr>
                                         <th>{{ $i }}</th>
-                                        <td>{{ $item->name }}</td>
-                                        @if ($item->state)
-                                            <td>Entrée</td>
-                                        @else
-                                            <td>Sortie</td>
-                                        @endif
+                                        <td>{{ $item->description }}</td>
+                                        <td>{{ $item->startYear->year }}</td>
+                                        <td>{{ $item->endYear->year }}</td>
+                                        <td>{{ $item->status->name }}</td>
+                                        <td>{{ $item->currency->currency }}</td>
                                         <td class="d-flex">
                                             <a title="Afficher" style="color: #fff;margin-right: 5px"
-                                                href="{{ route('typeAccounts.show', ['id' => $item->id]) }}"
+                                                href="{{ route('budgetings.show', ['id' => $item->id]) }}"
                                                 class="btn btn-info btn-sm"><i class="fas fa-eye"></i></a>
                                             <form
                                                 onsubmit="return confirm('Voulez-vous vraiment supprimer cet enregistrement ?')"
-                                                action="{{ route('typeAccounts.destroy', ['id' => $item->id]) }}"
+                                                action="{{ route('budgetings.destroy', ['id' => $item->id]) }}"
                                                 method="POST">
                                                 @csrf
                                                 <input type="hidden" name="id" value="{{ $item->id }}">
@@ -83,37 +85,6 @@
                         </div>
                     @endif
                 </div>
-                <div class="col-md-3" style="padding-top: 50px">
-                    @if ($show)
-                        <form method="POST" action="{{ route('typeAccounts.update', ['id' => $type->id]) }}">
-                            <!-- Name input -->
-                            @csrf
-                            <div class="form-outline mb-4">
-                                <input required="required" value="{{ $type->name }}" name="name" type="text"
-                                    id="name" class="form-control" />
-                                <label class="form-label" for="name">Intitulé</label>
-                            </div>
-                            <div class=" mb-4">
-                                <select required="required" name="state" class="form-control">
-                                    <option disabled value="1">Oui si type est une entrée, "Non", Sinon
-                                    </option>
-                                    <option {{ $type->state ? 'selected' : '' }} value="1">Oui</option>
-                                    <option {{ !$type->state ? 'selected' : '' }} value="0">Non</option>
-                                </select>
-                            </div>
-                            <div class="modal-footer">
-                                <a type="button" class="btn btn-danger" href="{{ route('typeAccounts') }}">Fermer</a>
-                                <button type="submit" class="btn btn-primary">Modifier</button>
-                            </div>
-                        </form>
-                    @else
-                        @if (count($types) > 0)
-                            <div class="alert alert-info">
-                                Sélectionnez un élément sur le tableau pour visualiser
-                            </div>
-                        @endif
-                    @endif
-                </div>
             </div>
         </div>
     </main>
@@ -126,20 +97,44 @@
                     <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="{{ route('typeAccounts.store') }}">
+                    <form method="POST" action="{{ route('budgetings.store') }}">
                         <!-- Name input -->
                         @csrf
                         <div class="form-outline mb-4">
-                            <input required="required" name="name" type="text" id="name"
+                            <input required="required" name="description" type="text" id="description"
                                 class="form-control" />
-                            <label class="form-label" for="name">Intitulé</label>
+                            <label class="form-label" for="description">Description</label>
                         </div>
-                        <div class=" mb-4">
-                            <select required="required" name="state" class="form-control">
-                                <option disabled selected value="1">Oui si type est une entrée, "Non", Sinon
-                                </option>
-                                <option value="1">Oui</option>
-                                <option value="0">Non</option>
+                        <div class="mb-4">
+                            <select required="required" name="startYear" id="startYear" class="form-control">
+                                <option value="">Année début</option>
+                                @foreach ($years as $item)
+                                    <option value="{{ $item->id }}">{{ $item->year }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-4">
+                            <select required="required" name="endYear" id="endYear" class="form-control">
+                                <option value="">Année fin</option>
+                                @foreach ($years as $item)
+                                    <option value="{{ $item->id }}">{{ $item->year }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-4">
+                            <select required="required" name="currency" id="currency" class="form-control">
+                                <option value="">Dévise</option>
+                                @foreach ($currencies as $item)
+                                    <option value="{{ $item->id }}">{{ $item->currency }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-4">
+                            <select required="required" name="status" id="status" class="form-control">
+                                <option value="">Status</option>
+                                @foreach ($status as $item)
+                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="modal-footer">

@@ -12,14 +12,21 @@
                     <a href="#" class="list-group-item list-group-item-action py-2 ripple">
                         <i class="fas fa-chart-area fa-fw me-3"></i><span>Rapport</span>
                     </a>
-                    <a href="#" class="list-group-item list-group-item-action py-2 ripple">
+                    <a href="{{ route('transactions.home') }}"
+                        class="list-group-item list-group-item-action py-2 ripple">
                         <i class="fas fa-chart-area fa-fw me-3"></i><span>Journal</span>
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action py-2 ripple">
+                        <i class="fas fa-chart-area fa-fw me-3"></i><span>Prévision</span>
                     </a>
                     <a href="{{ route('accounts') }}" class="list-group-item list-group-item-action py-2 ripple">
                         <i class="fas fa-chart-area fa-fw me-3"></i><span>Compte</span>
                     </a>
                     <a href="#" class="list-group list-group-item-action py-2 ripple">
                         <span>Parametre</span>
+                        <a href="{{ route('budgetings') }}" class="list-group-item list-group-item-action py-2 ripple">
+                            <i class="fas fa-chart-area fa-fw me-3"></i><span>Budget</span>
+                        </a>
                         <a href="{{ route('beneficiaries') }}"
                             class="list-group-item list-group-item-action py-2 ripple">
                             <i class="fas fa-chart-area fa-fw me-3"></i><span>Agents</span>
@@ -37,6 +44,12 @@
                         <a href="{{ route('typeAccounts') }}"
                             class="list-group-item list-group-item-action py-2 ripple">
                             <i class="fas fa-chart-area fa-fw me-3"></i><span>Type de compte</span>
+                        </a>
+                        <a href="{{ route('years') }}" class="list-group-item list-group-item-action py-2 ripple">
+                            <i class="fas fa-chart-area fa-fw me-3"></i><span>Année</span>
+                        </a>
+                        <a href="{{ route('status') }}" class="list-group-item list-group-item-action py-2 ripple">
+                            <i class="fas fa-chart-area fa-fw me-3"></i><span>Status</span>
                         </a>
                         <a href="#" class="list-group-item list-group-item-action py-2 ripple">
                             <i class="fas fa-chart-area fa-fw me-3"></i><span>Utilisateurs</span>

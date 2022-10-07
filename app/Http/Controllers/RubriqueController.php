@@ -5,9 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Rubrique;
 use App\Models\TypeRubrique;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-
-use function PHPSTORM_META\type;
 
 class RubriqueController extends Controller
 {
@@ -18,21 +15,10 @@ class RubriqueController extends Controller
      */
     public function index()
     {
-        $rubriques = DB::table('rubriques')->orderBy('name', 'asc')->paginate(10);
-        $data = [];
-        foreach ($rubriques as $item) {
-            $type = TypeRubrique::find($item->type_rubrique_id);
-            array_push($data, [
-                'id' => $item->id,
-                'name' => $item->name,
-                'code' => $item->code,
-                'type' => $type->name,
-            ]);
-        }
+        $rubriques = Rubrique::all();
         $typeRubriques = TypeRubrique::all();
         return view('ui.rubrique.all', [
-            'rubriques' => $data,
-            'paginate' => $rubriques,
+            'rubriques' => $rubriques,
             'typeRubriques' => $typeRubriques,
         ]);
     }

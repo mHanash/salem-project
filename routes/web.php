@@ -1,11 +1,17 @@
 <?php
 
 use App\Http\Controllers\BeneficiaryController;
+use App\Http\Controllers\BudgetingController;
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\JobController;
+use App\Http\Controllers\LineBudgetingController;
 use App\Http\Controllers\RubriqueController;
+use App\Http\Controllers\StatusController;
+use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\TypeBeneficiaryController;
 use App\Http\Controllers\TypeRubriqueController;
+use App\Http\Controllers\YearController;
+use App\Models\Budgeting;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -58,6 +64,31 @@ Route::post('account', [RubriqueController::class, 'store'])->name('accounts.sto
 Route::delete('account/{id}', [RubriqueController::class, 'destroy'])->name('accounts.destroy');
 Route::get('account/{id}', [RubriqueController::class, 'show'])->name('accounts.show');
 Route::post('account/update/{id}', [RubriqueController::class, 'update'])->name('accounts.update');
+
+Route::get('transaction/{id}', [TransactionController::class, 'show'])->name('transactions.show')->where('id', '[0-9]+');
+Route::get('transaction/budgeting/{id}', [TransactionController::class, 'index'])->name('transactions')->where('id', '[0-9]+');
+Route::post('transaction/update/{id}', [TransactionController::class, 'update'])->name('transactions.update')->where('id', '[0-9]+');
+Route::get('transaction/home', [TransactionController::class, 'home'])->name('transactions.home');
+Route::post('transaction', [TransactionController::class, 'store'])->name('transactions.store');
+Route::delete('transaction/{id}', [TransactionController::class, 'destroy'])->name('transactions.destroy');
+
+Route::get('budgeting', [BudgetingController::class, 'index'])->name('budgetings');
+Route::post('budgeting', [BudgetingController::class, 'store'])->name('budgetings.store');
+Route::delete('budgeting/{id}', [BudgetingController::class, 'destroy'])->name('budgetings.destroy');
+Route::get('budgeting/{id}', [BudgetingController::class, 'show'])->name('budgetings.show');
+Route::post('budgeting/update/{id}', [BudgetingController::class, 'update'])->name('budgetings.update');
+
+Route::get('status', [StatusController::class, 'index'])->name('status');
+Route::post('status', [StatusController::class, 'store'])->name('status.store');
+Route::delete('status/{id}', [StatusController::class, 'destroy'])->name('status.destroy');
+Route::get('status/{id}', [StatusController::class, 'show'])->name('status.show');
+Route::post('status/update/{id}', [StatusController::class, 'update'])->name('status.update');
+
+Route::get('years', [YearController::class, 'index'])->name('years');
+Route::post('years', [YearController::class, 'store'])->name('years.store');
+Route::delete('years/{id}', [YearController::class, 'destroy'])->name('years.destroy');
+Route::get('years/{id}', [YearController::class, 'show'])->name('years.show');
+Route::post('years/update/{id}', [YearController::class, 'update'])->name('years.update');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
