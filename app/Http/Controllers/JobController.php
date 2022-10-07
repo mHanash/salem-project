@@ -14,7 +14,12 @@ class JobController extends Controller
      */
     public function index()
     {
-        //
+        $jobs = Job::all();
+        return view('ui.job.all', [
+            'jobs' => $jobs,
+            'show' => false,
+            'job' => null,
+        ]);
     }
 
     /**
@@ -35,7 +40,12 @@ class JobController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if ($job = Job::create([
+            'name' => $request->name
+        ])) {
+            return redirect()->back()->with('success', 'Elément ajouté');
+        }
+        return redirect()->back()->with('fail', 'Une erreur est survenue lors de l\'enregistrement');
     }
 
     /**
@@ -44,9 +54,15 @@ class JobController extends Controller
      * @param  \App\Models\Job  $job
      * @return \Illuminate\Http\Response
      */
-    public function show(Job $job)
+    public function show(Request $request, Job $job)
     {
-        //
+        $job = Job::find($request->id);
+        $jobs = Job::all();
+        return view('ui.job.all', [
+            'jobs' => $jobs,
+            'show' => true,
+            'job' => $job,
+        ]);
     }
 
     /**
@@ -69,7 +85,13 @@ class JobController extends Controller
      */
     public function update(Request $request, Job $job)
     {
-        //
+        $job = Job::find($request->id);
+        if ($job->update([
+            'name' => $request->name
+        ])) {
+            return redirect()->back()->with('success', 'Elément modifié');
+        }
+        return redirect()->back()->with('fail', 'Une erreur est survenue lors de la modification');
     }
 
     /**
@@ -78,8 +100,12 @@ class JobController extends Controller
      * @param  \App\Models\Job  $job
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Job $job)
+    public function destroy(Request $request, Job $job)
     {
-        //
+        $job = Job::find($request->id);
+        if ($job->delete()) {
+            return redirect()->back()->with('success', 'Elément supprimé');
+        }
+        return redirect()->back()->with('fail', 'Une erreur est survenue lors de la suppression');
     }
 }

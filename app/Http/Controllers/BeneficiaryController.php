@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Beneficiary;
+use App\Models\TypeBeneficiary;
 use Illuminate\Http\Request;
 
 class BeneficiaryController extends Controller
@@ -14,7 +15,12 @@ class BeneficiaryController extends Controller
      */
     public function index()
     {
-        //
+        $beneficiaries = Beneficiary::all();
+        $typeBeneficiaries = TypeBeneficiary::all();
+        return view('ui.beneficiary.all', [
+            'beneficiaries' => $beneficiaries,
+            'typeBeneficiaries' => $typeBeneficiaries
+        ]);
     }
 
     /**

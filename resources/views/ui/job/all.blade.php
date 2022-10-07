@@ -20,7 +20,7 @@
                 <div class="row align-items-center" style="margin-bottom: 10px">
                     <div class="col-md-5">
                         <h4 class="page-title">
-                            TYPE AGENT DE FINANCEMENT
+                            POSTE
                         </h4>
                     </div>
                     <div class="col-md-7">
@@ -32,7 +32,7 @@
             </div>
             <div class="row">
                 <div class="col-md-9">
-                    @if (count($types) > 0)
+                    @if (count($jobs) > 0)
                         <table class="table table-sm">
                             <thead>
                                 <tr>
@@ -45,7 +45,7 @@
                                 @php
                                     $i = 0;
                                 @endphp
-                                @foreach ($types as $item)
+                                @foreach ($jobs as $item)
                                     @php
                                         $i++;
                                     @endphp
@@ -54,12 +54,11 @@
                                         <td>{{ $item->name }}</td>
                                         <td class="d-flex">
                                             <a title="Afficher" style="color: #fff;margin-right: 5px"
-                                                href="{{ route('typeBeneficiaries.show', ['id' => $item->id]) }}"
+                                                href="{{ route('jobs.show', ['id' => $item->id]) }}"
                                                 class="btn btn-info btn-sm"><i class="fas fa-eye"></i></a>
                                             <form
                                                 onsubmit="return confirm('Voulez-vous vraiment supprimer cet enregistrement ?')"
-                                                action="{{ route('typeBeneficiaries.destroy', ['id' => $item->id]) }}"
-                                                method="POST">
+                                                action="{{ route('jobs.destroy', ['id' => $item->id]) }}" method="POST">
                                                 @csrf
                                                 <input type="hidden" name="id" value="{{ $item->id }}">
                                                 <input type="hidden" name="_method" value="DELETE">
@@ -79,21 +78,21 @@
                 </div>
                 <div class="col-md-3" style="padding-top: 50px">
                     @if ($show)
-                        <form method="POST" action="{{ route('typeBeneficiaries.update', ['id' => $type->id]) }}">
+                        <form method="POST" action="{{ route('jobs.update', ['id' => $job->id]) }}">
                             <!-- Name input -->
                             @csrf
                             <div class="form-outline mb-4">
-                                <input required="required" value="{{ $type->name }}" name="name" type="text"
+                                <input required="required" value="{{ $job->name }}" name="name" type="text"
                                     id="name" class="form-control" />
                                 <label class="form-label" for="name">Intitulé</label>
                             </div>
                             <div class="modal-footer">
-                                <a type="button" class="btn btn-danger" href="{{ route('typeBeneficiaries') }}">Fermer</a>
+                                <a type="button" class="btn btn-danger" href="{{ route('jobs') }}">Fermer</a>
                                 <button type="submit" class="btn btn-primary">Modifier</button>
                             </div>
                         </form>
                     @else
-                        @if (count($types) > 0)
+                        @if (count($jobs) > 0)
                             <div class="alert alert-info">
                                 Sélectionnez un élément sur le tableau pour visualiser
                             </div>
@@ -112,7 +111,7 @@
                     <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="{{ route('typeBeneficiaries.store') }}">
+                    <form method="POST" action="{{ route('jobs.store') }}">
                         <!-- Name input -->
                         @csrf
                         <div class="form-outline mb-4">

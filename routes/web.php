@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\JobController;
 use App\Http\Controllers\TypeBeneficiaryController;
 use Illuminate\Support\Facades\Route;
 
@@ -22,6 +23,12 @@ Route::post('type_beneficiary', [TypeBeneficiaryController::class, 'store'])->na
 Route::delete('type_beneficiary/{id}', [TypeBeneficiaryController::class, 'destroy'])->name('typeBeneficiaries.destroy');
 Route::get('type_beneficiary/{id}', [TypeBeneficiaryController::class, 'show'])->name('typeBeneficiaries.show');
 Route::post('type_beneficiary/update/{id}', [TypeBeneficiaryController::class, 'update'])->name('typeBeneficiaries.update');
+
+Route::get('job', [JobController::class, 'index'])->name('jobs');
+Route::post('job', [JobController::class, 'store'])->name('jobs.store');
+Route::delete('job/{id}', [JobController::class, 'destroy'])->name('jobs.destroy');
+Route::get('job/{id}', [JobController::class, 'show'])->name('jobs.show');
+Route::post('job/update/{id}', [JobController::class, 'update'])->name('jobs.update');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

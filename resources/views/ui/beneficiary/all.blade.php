@@ -20,7 +20,7 @@
                 <div class="row align-items-center" style="margin-bottom: 10px">
                     <div class="col-md-5">
                         <h4 class="page-title">
-                            TYPE AGENT DE FINANCEMENT
+                            AGENT DE FINANCEMENT
                         </h4>
                     </div>
                     <div class="col-md-7">
@@ -37,7 +37,10 @@
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>
-                                    <th scope="col">Intitulé</th>
+                                    <th scope="col">Nom</th>
+                                    <th scope="col">Postnom</th>
+                                    <th scope="col">Prénom</th>
+                                    <th scope="col">Poste</th>
                                     <th scope="col">Actions</th>
                                 </tr>
                             </thead>
@@ -93,11 +96,9 @@
                             </div>
                         </form>
                     @else
-                        @if (count($types) > 0)
-                            <div class="alert alert-info">
-                                Sélectionnez un élément sur le tableau pour visualiser
-                            </div>
-                        @endif
+                        <div class="alert alert-info">
+                            Sélectionnez un élément sur le tableau pour visualiser
+                        </div>
                     @endif
                 </div>
             </div>
