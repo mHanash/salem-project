@@ -31,8 +31,8 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-9">
-                    @if (count($types) > 0)
+                <div class="col">
+                    @if (count($beneficiaries) > 0)
                         <table class="table table-sm">
                             <thead>
                                 <tr>
@@ -41,6 +41,7 @@
                                     <th scope="col">Postnom</th>
                                     <th scope="col">Prénom</th>
                                     <th scope="col">Poste</th>
+                                    <th scope="col">Type</th>
                                     <th scope="col">Actions</th>
                                 </tr>
                             </thead>
@@ -48,20 +49,24 @@
                                 @php
                                     $i = 0;
                                 @endphp
-                                @foreach ($types as $item)
+                                @foreach ($beneficiaries as $item)
                                     @php
                                         $i++;
                                     @endphp
                                     <tr>
                                         <th>{{ $i }}</th>
                                         <td>{{ $item->name }}</td>
+                                        <td>{{ $item->lastname }}</td>
+                                        <td>{{ $item->firstname }}</td>
+                                        <td>{{ $item->job->name }}</td>
+                                        <td>{{ $item->typeBeneficiary->name }}</td>
                                         <td class="d-flex">
                                             <a title="Afficher" style="color: #fff;margin-right: 5px"
-                                                href="{{ route('typeBeneficiaries.show', ['id' => $item->id]) }}"
+                                                href="{{ route('beneficiaries.show', ['id' => $item->id]) }}"
                                                 class="btn btn-info btn-sm"><i class="fas fa-eye"></i></a>
                                             <form
                                                 onsubmit="return confirm('Voulez-vous vraiment supprimer cet enregistrement ?')"
-                                                action="{{ route('typeBeneficiaries.destroy', ['id' => $item->id]) }}"
+                                                action="{{ route('beneficiaries.destroy', ['id' => $item->id]) }}"
                                                 method="POST">
                                                 @csrf
                                                 <input type="hidden" name="id" value="{{ $item->id }}">
@@ -80,27 +85,6 @@
                         </div>
                     @endif
                 </div>
-                <div class="col-md-3" style="padding-top: 50px">
-                    @if ($show)
-                        <form method="POST" action="{{ route('typeBeneficiaries.update', ['id' => $type->id]) }}">
-                            <!-- Name input -->
-                            @csrf
-                            <div class="form-outline mb-4">
-                                <input required="required" value="{{ $type->name }}" name="name" type="text"
-                                    id="name" class="form-control" />
-                                <label class="form-label" for="name">Intitulé</label>
-                            </div>
-                            <div class="modal-footer">
-                                <a type="button" class="btn btn-danger" href="{{ route('typeBeneficiaries') }}">Fermer</a>
-                                <button type="submit" class="btn btn-primary">Modifier</button>
-                            </div>
-                        </form>
-                    @else
-                        <div class="alert alert-info">
-                            Sélectionnez un élément sur le tableau pour visualiser
-                        </div>
-                    @endif
-                </div>
             </div>
         </div>
     </main>
@@ -113,12 +97,38 @@
                     <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="{{ route('typeBeneficiaries.store') }}">
+                    <form method="POST" action="{{ route('beneficiaries.store') }}">
                         <!-- Name input -->
                         @csrf
                         <div class="form-outline mb-4">
                             <input required="required" name="name" type="text" id="name" class="form-control" />
-                            <label class="form-label" for="name">Intitulé</label>
+                            <label class="form-label" for="name">Nom</label>
+                        </div>
+                        <div class="form-outline mb-4">
+                            <input required="required" name="lastname" type="text" id="lastname" class="form-control" />
+                            <label class="form-label" for="lastname">Postnom</label>
+                        </div>
+                        <div class="form-outline mb-4">
+                            <input required="required" name="firstname" type="text" id="firstname"
+                                class="form-control" />
+                            <label class="form-label" for="firstname">Prenom</label>
+                        </div>
+                        <div class="mb-4">
+                            <select required="required" name="job" id="job" class="form-control">
+                                <option value="">Poste</option>
+                                @foreach ($jobs as $item)
+                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-4">
+                            <select required="required" name="typeBeneficiary" id="typeBeneficiary"
+                                class="form-control">
+                                <option value="">Type Agent</option>
+                                @foreach ($typeBeneficiaries as $item)
+                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-mdb-dismiss="modal">Fermer</button>

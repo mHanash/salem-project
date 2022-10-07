@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Beneficiary;
+use App\Models\Job;
 use App\Models\TypeBeneficiary;
 use Illuminate\Http\Request;
 
@@ -16,10 +17,13 @@ class BeneficiaryController extends Controller
     public function index()
     {
         $beneficiaries = Beneficiary::all();
+        $jobs = Job::all();
         $typeBeneficiaries = TypeBeneficiary::all();
         return view('ui.beneficiary.all', [
             'beneficiaries' => $beneficiaries,
-            'typeBeneficiaries' => $typeBeneficiaries
+            'typeBeneficiaries' => $typeBeneficiaries,
+            'typeBeneficiaries' => $typeBeneficiaries,
+            'jobs' => $jobs,
         ]);
     }
 
@@ -41,7 +45,16 @@ class BeneficiaryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if ($beneficiary = Beneficiary::create([
+            'name' => $request->name,
+            'lastname' => $request->lastname,
+            'firstname' => $request->firstname,
+            'type_beneficiary_id' => $request->typeBeneficiary,
+            'job_id' => $request->job,
+        ])) {
+            return redirect()->back()->with('success', 'Elément ajouté');
+        }
+        return redirect()->back()->with('fail', 'Une erreur est survenue lors de l\'enregistrement');
     }
 
     /**
@@ -50,9 +63,16 @@ class BeneficiaryController extends Controller
      * @param  \App\Models\Beneficiary  $beneficiary
      * @return \Illuminate\Http\Response
      */
-    public function show(Beneficiary $beneficiary)
+    public function show(Request $request, Beneficiary $beneficiary)
     {
-        //
+        $jobs = Job::all();
+        $typeBeneficiaries = TypeBeneficiary::all();
+        $beneficiary = Beneficiary::find($request->id);
+        return view('ui.beneficiary.show', [
+            'beneficiary' => $beneficiary,
+            'jobs' => $jobs,
+            'typeBeneficiaries' => $typeBeneficiaries,
+        ]);
     }
 
     /**
@@ -75,7 +95,12 @@ class BeneficiaryController extends Controller
      */
     public function update(Request $request, Beneficiary $beneficiary)
     {
-        //
+        $beneficiary = Beneficiary::find($request->id);
+        if ($beneficiary->update($request->all())) { {
+                return redirect()->route('beneficiaries')->with('success', 'Elément modifié');
+            }
+            return redirect()->route('beneficiaries')->with('fail', 'Une erreur est survenue lors de la modification');
+        }
     }
 
     /**
@@ -84,8 +109,13 @@ class BeneficiaryController extends Controller
      * @param  \App\Models\Beneficiary  $beneficiary
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Beneficiary $beneficiary)
+    public function destroy(Request $request, Beneficiary $beneficiary)
     {
-        //
+        $beneficiary = Beneficiary::find($request->id);
+        if ($beneficiary->delete()) { {
+                return redirect()->route('beneficiaries')->with('success', 'Elément supprimé');
+            }
+            return redirect()->route('beneficiaries')->with('fail', 'Une erreur est survenue lors de la suppression');
+        }
     }
 }

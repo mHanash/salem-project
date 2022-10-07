@@ -20,7 +20,8 @@
                     </a>
                     <a href="#" class="list-group list-group-item-action py-2 ripple">
                         <span>Parametre</span>
-                        <a href="#" class="list-group-item list-group-item-action py-2 ripple">
+                        <a href="{{ route('beneficiaries') }}"
+                            class="list-group-item list-group-item-action py-2 ripple">
                             <i class="fas fa-chart-area fa-fw me-3"></i><span>Agents</span>
                         </a>
                         <a href="{{ route('typeBeneficiaries') }}"

@@ -27,9 +27,9 @@ class Beneficiary extends Model
         return $this->belongsTo(Job::class);
     }
 
-    public function type_beneficiary()
+    public function typeBeneficiary()
     {
-        return $this->belongsTo(TypeBeneficiary::class, 'id', 'type_beneficiary_id');
+        return $this->belongsTo(TypeBeneficiary::class);
     }
 
     public function transactions()
