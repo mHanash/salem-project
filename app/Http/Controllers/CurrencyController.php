@@ -14,7 +14,12 @@ class CurrencyController extends Controller
      */
     public function index()
     {
-        //
+        $types = Currency::all();
+        return view('ui.currency.all', [
+            'currencies' => $types,
+            'show' => false,
+            'currency' => null,
+        ]);
     }
 
     /**
@@ -35,7 +40,13 @@ class CurrencyController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if ($currency = Currency::create([
+            'currency' => $request->currency,
+            'description' => $request->description,
+        ])) {
+            return redirect()->back()->with('success', 'Elément ajouté');
+        }
+        return redirect()->back()->with('fail', 'Une erreur est survenue lors de l\'enregistrement');
     }
 
     /**
@@ -44,9 +55,15 @@ class CurrencyController extends Controller
      * @param  \App\Models\Currency  $currency
      * @return \Illuminate\Http\Response
      */
-    public function show(Currency $currency)
+    public function show(Request $request, Currency $currency)
     {
-        //
+        $currency = Currency::find($request->id);
+        $currencies = Currency::all();
+        return view('ui.currency.all', [
+            'currencies' => $currencies,
+            'show' => true,
+            'currency' => $currency,
+        ]);
     }
 
     /**
@@ -69,7 +86,14 @@ class CurrencyController extends Controller
      */
     public function update(Request $request, Currency $currency)
     {
-        //
+        $currency = Currency::find($request->id);
+        if ($currency->update([
+            'currency' => $request->currency,
+            'description' => $request->description,
+        ])) {
+            return redirect()->back()->with('success', 'Elément modifié');
+        }
+        return redirect()->back()->with('fail', 'Une erreur est survenue lors de la modification');
     }
 
     /**
@@ -78,8 +102,12 @@ class CurrencyController extends Controller
      * @param  \App\Models\Currency  $currency
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Currency $currency)
+    public function destroy(Request $request, Currency $currency)
     {
-        //
+        $currency = Currency::find($request->id);
+        if ($currency->delete()) {
+            return redirect()->back()->with('success', 'Elément supprimé');
+        }
+        return redirect()->back()->with('fail', 'Une erreur est survenue lors de la suppression');
     }
 }

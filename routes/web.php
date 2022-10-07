@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BeneficiaryController;
+use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\TypeBeneficiaryController;
 use App\Http\Controllers\TypeRubriqueController;
@@ -20,6 +21,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('home');
 })->name('home');
+
 Route::get('type_beneficiary', [TypeBeneficiaryController::class, 'index'])->name('typeBeneficiaries');
 Route::post('type_beneficiary', [TypeBeneficiaryController::class, 'store'])->name('typeBeneficiaries.store');
 Route::delete('type_beneficiary/{id}', [TypeBeneficiaryController::class, 'destroy'])->name('typeBeneficiaries.destroy');
@@ -43,6 +45,12 @@ Route::post('type_account', [TypeRubriqueController::class, 'store'])->name('typ
 Route::delete('type_account/{id}', [TypeRubriqueController::class, 'destroy'])->name('typeAccounts.destroy');
 Route::get('type_account/{id}', [TypeRubriqueController::class, 'show'])->name('typeAccounts.show');
 Route::post('type_account/update/{id}', [TypeRubriqueController::class, 'update'])->name('typeAccounts.update');
+
+Route::get('currency', [CurrencyController::class, 'index'])->name('currencies');
+Route::post('currency', [CurrencyController::class, 'store'])->name('currencies.store');
+Route::delete('currency/{id}', [CurrencyController::class, 'destroy'])->name('currencies.destroy');
+Route::get('currency/{id}', [CurrencyController::class, 'show'])->name('currencies.show');
+Route::post('currency/update/{id}', [CurrencyController::class, 'update'])->name('currencies.update');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

@@ -13,6 +13,7 @@ class Currency extends Model
     use HasFactory, SoftDeletes;
     protected $fillable = [
         'currency',
+        'description',
     ];
 
     public function budgetings()
