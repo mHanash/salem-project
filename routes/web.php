@@ -3,6 +3,7 @@
 use App\Http\Controllers\BeneficiaryController;
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\JobController;
+use App\Http\Controllers\RubriqueController;
 use App\Http\Controllers\TypeBeneficiaryController;
 use App\Http\Controllers\TypeRubriqueController;
 use Illuminate\Support\Facades\Route;
@@ -51,6 +52,12 @@ Route::post('currency', [CurrencyController::class, 'store'])->name('currencies.
 Route::delete('currency/{id}', [CurrencyController::class, 'destroy'])->name('currencies.destroy');
 Route::get('currency/{id}', [CurrencyController::class, 'show'])->name('currencies.show');
 Route::post('currency/update/{id}', [CurrencyController::class, 'update'])->name('currencies.update');
+
+Route::get('account', [RubriqueController::class, 'index'])->name('accounts');
+Route::post('account', [RubriqueController::class, 'store'])->name('accounts.store');
+Route::delete('account/{id}', [RubriqueController::class, 'destroy'])->name('accounts.destroy');
+Route::get('account/{id}', [RubriqueController::class, 'show'])->name('accounts.show');
+Route::post('account/update/{id}', [RubriqueController::class, 'update'])->name('accounts.update');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

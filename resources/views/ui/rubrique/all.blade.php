@@ -20,7 +20,7 @@
                 <div class="row align-items-center" style="margin-bottom: 10px">
                     <div class="col-md-5">
                         <h4 class="page-title">
-                            POSTE
+                            AGENT DE FINANCEMENT
                         </h4>
                     </div>
                     <div class="col-md-7">
@@ -31,13 +31,15 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-9">
-                    @if (count($jobs) > 0)
-                        <table class="table table-sm">
+                <div class="col table-responsive">
+                    @if (count($rubriques) > 0)
+                        <table id="_config" class="table table-sm table-striped">
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>
+                                    <th scope="col">code</th>
                                     <th scope="col">Intitulé</th>
+                                    <th scope="col">Type de compte</th>
                                     <th scope="col">Actions</th>
                                 </tr>
                             </thead>
@@ -45,22 +47,25 @@
                                 @php
                                     $i = 0;
                                 @endphp
-                                @foreach ($jobs as $item)
+                                @foreach ($rubriques as $item)
                                     @php
                                         $i++;
                                     @endphp
                                     <tr>
                                         <th>{{ $i }}</th>
-                                        <td>{{ $item->name }}</td>
+                                        <td>{{ $item['code'] }}</td>
+                                        <td>{{ $item['name'] }}</td>
+                                        <td>{{ $item['type'] }}</td>
                                         <td class="d-flex">
                                             <a title="Afficher" style="color: #fff;margin-right: 5px"
-                                                href="{{ route('jobs.show', ['id' => $item->id]) }}"
+                                                href="{{ route('accounts.show', ['id' => $item['id']]) }}"
                                                 class="btn btn-info btn-sm"><i class="fas fa-eye"></i></a>
                                             <form
                                                 onsubmit="return confirm('Voulez-vous vraiment supprimer cet enregistrement ?')"
-                                                action="{{ route('jobs.destroy', ['id' => $item->id]) }}" method="POST">
+                                                action="{{ route('accounts.destroy', ['id' => $item['id']]) }}"
+                                                method="POST">
                                                 @csrf
-                                                <input type="hidden" name="id" value="{{ $item->id }}">
+                                                <input type="hidden" name="id" value="{{ $item['id'] }}">
                                                 <input type="hidden" name="_method" value="DELETE">
                                                 <button title="Supprimer" style="color: #fff"
                                                     class="btn btn-danger btn-sm "><i class="far fa-trash-alt"></i></button>
@@ -76,30 +81,8 @@
                         </div>
                     @endif
                 </div>
-                <div class="col-md-3" style="padding-top: 50px">
-                    @if ($show)
-                        <form method="POST" action="{{ route('jobs.update', ['id' => $job->id]) }}">
-                            <!-- Name input -->
-                            @csrf
-                            <div class="form-outline mb-4">
-                                <input required="required" value="{{ $job->name }}" name="name" type="text"
-                                    id="name" class="form-control" />
-                                <label class="form-label" for="name">Intitulé</label>
-                            </div>
-                            <div class="modal-footer">
-                                <a type="button" class="btn btn-danger" href="{{ route('jobs') }}">Fermer</a>
-                                <button type="submit" class="btn btn-primary">Modifier</button>
-                            </div>
-                        </form>
-                    @else
-                        @if (count($jobs) > 0)
-                            <div class="alert alert-info">
-                                Sélectionnez un élément sur le tableau pour visualiser
-                            </div>
-                        @endif
-                    @endif
-                </div>
             </div>
+            <div class="row">{{ $paginate->links() }}</div>
         </div>
     </main>
     <!-- Modal -->
@@ -111,12 +94,24 @@
                     <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="{{ route('jobs.store') }}">
+                    <form method="POST" action="{{ route('accounts.store') }}">
                         <!-- Name input -->
                         @csrf
                         <div class="form-outline mb-4">
+                            <input required="required" name="code" type="text" id="code" class="form-control" />
+                            <label class="form-label" for="name">Code</label>
+                        </div>
+                        <div class="form-outline mb-4">
                             <input required="required" name="name" type="text" id="name" class="form-control" />
                             <label class="form-label" for="name">Intitulé</label>
+                        </div>
+                        <div class="mb-4">
+                            <select required="required" name="typeRubrique" id="typeRubrique" class="form-control">
+                                <option disabled selected value="">Type compte</option>
+                                @foreach ($typeRubriques as $item)
+                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-mdb-dismiss="modal">Fermer</button>

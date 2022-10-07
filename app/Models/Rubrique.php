@@ -15,6 +15,7 @@ class Rubrique extends Model
     protected $fillable = [
         'name',
         'type_rubrique_id',
+        'code',
     ];
 
     public function lineBudgetings()

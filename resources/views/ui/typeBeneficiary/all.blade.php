@@ -6,14 +6,14 @@
             @if (session()->has('success'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     <strong>Succès ! </strong>{{ session()->get('success') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-mdb-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endif
 
             @if (session()->has('fail'))
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                     <strong>Erreur ! </strong>{{ session()->get('fail') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-mdb-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endif
             <div class="page-breadcrumb">

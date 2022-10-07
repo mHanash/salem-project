@@ -96,7 +96,13 @@ class BeneficiaryController extends Controller
     public function update(Request $request, Beneficiary $beneficiary)
     {
         $beneficiary = Beneficiary::find($request->id);
-        if ($beneficiary->update($request->all())) { {
+        if ($beneficiary->update([
+            'name' => $request->name,
+            'lastname' => $request->lastname,
+            'firstname' => $request->firstname,
+            'type_beneficiary_id' => $request->typeBeneficiary,
+            'job_id' => $request->job,
+        ])) { {
                 return redirect()->route('beneficiaries')->with('success', 'Elément modifié');
             }
             return redirect()->route('beneficiaries')->with('fail', 'Une erreur est survenue lors de la modification');
