@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 use App\Models\Job;
 use App\Models\Transaction;
+use App\Models\TypeBeneficiary;
 
 class Beneficiary extends Model
 {
@@ -18,11 +19,17 @@ class Beneficiary extends Model
         'firstname',
         'lastname',
         'job_id',
+        'type_beneficiary_id',
     ];
 
     public function job()
     {
         return $this->belongsTo(Job::class);
+    }
+
+    public function type_beneficiary()
+    {
+        return $this->belongsTo(TypeBeneficiary::class, 'id', 'type_beneficiary_id');
     }
 
     public function transactions()
