@@ -3,6 +3,7 @@
 use App\Http\Controllers\BeneficiaryController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\TypeBeneficiaryController;
+use App\Http\Controllers\TypeRubriqueController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,6 +37,12 @@ Route::post('job', [JobController::class, 'store'])->name('jobs.store');
 Route::delete('job/{id}', [JobController::class, 'destroy'])->name('jobs.destroy');
 Route::get('job/{id}', [JobController::class, 'show'])->name('jobs.show');
 Route::post('job/update/{id}', [JobController::class, 'update'])->name('jobs.update');
+
+Route::get('type_account', [TypeRubriqueController::class, 'index'])->name('typeAccounts');
+Route::post('type_account', [TypeRubriqueController::class, 'store'])->name('typeAccounts.store');
+Route::delete('type_account/{id}', [TypeRubriqueController::class, 'destroy'])->name('typeAccounts.destroy');
+Route::get('type_account/{id}', [TypeRubriqueController::class, 'show'])->name('typeAccounts.show');
+Route::post('type_account/update/{id}', [TypeRubriqueController::class, 'update'])->name('typeAccounts.update');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
