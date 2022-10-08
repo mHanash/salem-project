@@ -20,7 +20,7 @@
                 <div class="row align-items-center" style="margin-bottom: 10px">
                     <div class="col-md-5">
                         <h4 class="page-title">
-                            AGENT DE FINANCEMENT
+                            COMPTES/CATEGORIES
                         </h4>
                     </div>
                     <div class="col-md-7">
@@ -47,7 +47,7 @@
                                 @php
                                     $i = 0;
                                 @endphp
-                                @foreach ($rubriques as $item)
+                                @foreach ($data as $item)
                                     @php
                                         $i++;
                                     @endphp
@@ -82,7 +82,7 @@
                     @endif
                 </div>
             </div>
-            <div class="row">{{ $paginate->links() }}</div>
+            <div class="row">{{ $rubriques->links() }}</div>
         </div>
     </main>
     <!-- Modal -->

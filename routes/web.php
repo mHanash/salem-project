@@ -66,7 +66,7 @@ Route::get('account/{id}', [RubriqueController::class, 'show'])->name('accounts.
 Route::post('account/update/{id}', [RubriqueController::class, 'update'])->name('accounts.update');
 
 Route::get('transaction/{id}', [TransactionController::class, 'show'])->name('transactions.show')->where('id', '[0-9]+');
-Route::get('transaction/budgeting/{id}', [TransactionController::class, 'index'])->name('transactions')->where('id', '[0-9]+');
+Route::get('transaction/details/{id}', [TransactionController::class, 'index'])->name('transactions')->where('id', '[0-9]+');
 Route::post('transaction/update/{id}', [TransactionController::class, 'update'])->name('transactions.update')->where('id', '[0-9]+');
 Route::get('transaction/home', [TransactionController::class, 'home'])->name('transactions.home');
 Route::post('transaction', [TransactionController::class, 'store'])->name('transactions.store');
@@ -89,6 +89,13 @@ Route::post('years', [YearController::class, 'store'])->name('years.store');
 Route::delete('years/{id}', [YearController::class, 'destroy'])->name('years.destroy');
 Route::get('years/{id}', [YearController::class, 'show'])->name('years.show');
 Route::post('years/update/{id}', [YearController::class, 'update'])->name('years.update');
+
+Route::get('planning/details/{id}', [LineBudgetingController::class, 'index'])->name('plannings');
+Route::get('planning/home', [LineBudgetingController::class, 'home'])->name('plannings.home');
+Route::post('planning', [LineBudgetingController::class, 'store'])->name('plannings.store');
+Route::delete('planning/{id}', [LineBudgetingController::class, 'destroy'])->name('plannings.destroy');
+Route::get('planning/{id}', [LineBudgetingController::class, 'show'])->name('plannings.show');
+Route::post('planning/update/{id}', [LineBudgetingController::class, 'update'])->name('plannings.update')->where('id', '[0-9]+');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

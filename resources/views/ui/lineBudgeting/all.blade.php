@@ -20,36 +20,35 @@
                 <div class="row align-items-center" style="margin-bottom: 5px">
                     <div class="col-md-9">
                         <h5 class="page-title text-primary">
-                            Journal des transactions, Budget : {{ $budgeting->startYear->year }} -
+                            Prévision budgétaire : {{ $budgeting->startYear->year }} -
                             {{ $budgeting->endYear->year }}
                         </h5>
                     </div>
                 </div>
                 <div class="row align-items-center" style="margin-bottom: 10px">
                     <div class="col-md-6">
-                        <button data-mdb-toggle="modal" data-mdb-target="#addRec" style="float: right" type="button"
+                        <button data-mdb-toggle="modal" data-mdb-target="#addReceive" style="float: right" type="button"
                             class=" btn-sm btn btn-primary"><i class="fas fa-plus"></i>
-                            Ajouter recette</button>
+                            Entrées</button>
                     </div>
                     <div class="col-md-6">
-                        <button data-mdb-toggle="modal" data-mdb-target="#addDep" style="float: right" type="button"
+                        <button data-mdb-toggle="modal" data-mdb-target="#addSend" style="float: right" type="button"
                             class="btn btn-sm btn-danger"><i class="fas fa-plus"></i>
-                            Ajouter dépense</button>
+                            Sorties</button>
                     </div>
 
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6 border-end">
-                    <h6 class="border-bottom border-top">Débit</h6>
+                    <h6 class="border-bottom border-top">Entrées</h6>
                     <div class="col table-responsive" style="height:70vh;overflow:scroll">
-                        @if (count($transactions) > 0 && $budgeting)
+                        @if (count($lineBudgetings) > 0 && $budgeting)
                             <table id="_config" class="table table-sm table-striped">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Date</th>
                                         <th scope="col">Code</th>
-                                        <th scope="col">Libéllé</th>
+                                        <th scope="col">Compte</th>
                                         <th scope="col">Montant</th>
                                         <th scope="col">Actions</th>
                                     </tr>
@@ -58,24 +57,23 @@
                                     @php
                                         $total = 0;
                                     @endphp
-                                    @foreach ($transactions as $item)
+                                    @foreach ($lineBudgetings as $item)
                                         @if ($item->rubrique && $item->rubrique->typeRubrique->state == 1)
                                             <tr>
                                                 @php
                                                     $total += $item->amount;
                                                 @endphp
-                                                <td style="font-size:10px">{{ $item->date }}</td>
                                                 <td style="font-size:10px">{{ $item->rubrique->code }}</td>
-                                                <td style="font-size:10px">{{ $item->description }}</td>
+                                                <td style="font-size:10px">{{ $item->rubrique->name }}</td>
                                                 <td style="font-size:10px">{{ $item->amount }}
                                                     {{ $budgeting->currency->currency }}</td>
                                                 <td class="d-flex">
                                                     <a title="Afficher" style="color: #fff;margin-right: 5px"
-                                                        href="{{ route('transactions.show', ['id' => $item->id]) }}"
+                                                        href="{{ route('plannings.show', ['id' => $item->id]) }}"
                                                         class="btn btn-info btn-sm"><i class="fas fa-eye"></i></a>
                                                     <form
                                                         onsubmit="return confirm('Voulez-vous vraiment supprimer cet enregistrement ?')"
-                                                        action="{{ route('transactions.destroy', ['id' => $item->id]) }}"
+                                                        action="{{ route('plannings.destroy', ['id' => $item->id]) }}"
                                                         method="POST">
                                                         @csrf
                                                         <input type="hidden" name="id" value="{{ $item->id }}">
@@ -91,7 +89,7 @@
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <th colspan="4">Total</th>
+                                        <th colspan="3">Total</th>
                                         <th scope="col">{{ $total }} {{ $budgeting->currency->currency }}</th>
                                     </tr>
                                 </tfoot>
@@ -104,15 +102,14 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <h6 class="border-bottom border-top">Crédit</h6>
+                    <h6 class="border-bottom border-top">Sorties</h6>
                     <div class="col table-responsive" style="height:70vh;overflow:scroll">
-                        @if (count($transactions) > 0 && $budgeting)
+                        @if (count($lineBudgetings) > 0 && $budgeting)
                             <table id="_config" class="table table-sm table-striped">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Date</th>
                                         <th scope="col">Code</th>
-                                        <th scope="col">Libéllé</th>
+                                        <th scope="col">Compte</th>
                                         <th scope="col">Montant</th>
                                         <th scope="col">Actions</th>
                                     </tr>
@@ -121,24 +118,23 @@
                                     @php
                                         $total = 0;
                                     @endphp
-                                    @foreach ($transactions as $item)
+                                    @foreach ($lineBudgetings as $item)
                                         @if ($item->rubrique && $item->rubrique->typeRubrique->state != 1)
                                             <tr>
                                                 @php
                                                     $total += $item->amount;
                                                 @endphp
-                                                <td style="font-size:10px">{{ $item->date }}</td>
                                                 <td style="font-size:10px">{{ $item->rubrique->code }}</td>
-                                                <td style="font-size:10px">{{ $item->description }}</td>
+                                                <td style="font-size:10px">{{ $item->rubrique->name }}</td>
                                                 <td style="font-size:10px">{{ $item->amount }}
                                                     {{ $budgeting->currency->currency }}</td>
                                                 <td class="d-flex">
                                                     <a title="Afficher" style="color: #fff;margin-right: 5px"
-                                                        href="{{ route('transactions.show', ['id' => $item->id]) }}"
+                                                        href="{{ route('plannings.show', ['id' => $item->id]) }}"
                                                         class="btn btn-info btn-sm"><i class="fas fa-eye"></i></a>
                                                     <form
                                                         onsubmit="return confirm('Voulez-vous vraiment supprimer cet enregistrement ?')"
-                                                        action="{{ route('transactions.destroy', ['id' => $item->id]) }}"
+                                                        action="{{ route('plannings.destroy', ['id' => $item->id]) }}"
                                                         method="POST">
                                                         @csrf
                                                         <input type="hidden" name="id" value="{{ $item->id }}">
@@ -156,8 +152,7 @@
                                 <tfoot>
                                     <tr>
                                         <th colspan="3">Total</th>
-                                        <th colspan="2" scope="col">{{ $total }}
-                                            {{ $budgeting->currency->currency }}</th>
+                                        <th scope="col">{{ $total }} {{ $budgeting->currency->currency }}</th>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -171,7 +166,7 @@
             </div>
         </div>
     </main>
-    <div class="modal fade" id="addRec" tabindex="-1" aria-labelledby="addModalLabelRec" aria-hidden="true">
+    <div class="modal fade" id="addReceive" tabindex="-1" aria-labelledby="addModalLabelRec" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -179,12 +174,12 @@
                     <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="{{ route('transactions.store') }}">
+                    <form method="POST" action="{{ route('plannings.store') }}">
                         <!-- Name input -->
                         @csrf
                         <div class="form-outline mb-4">
                             <textarea rows="3" required="required" name="description" id="description" class="form-control"></textarea>
-                            <label class="form-label" for="description">Libellé</label>
+                            <label class="form-label" for="description">Description</label>
                         </div>
                         <div class="d-flex mb-4">
                             <div class="form-outline mr-4">
@@ -204,22 +199,6 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="d-flex mb-4">
-                            <div class="form-outline mr-4">
-                                <input required="required" name="date" type="date" id="date"
-                                    class="form-control" />
-                            </div>
-                        </div>
-                        <div class="mb-4">
-                            <select required="required" name="beneficiary" id="beneficiary" class="form-control">
-                                <option value="">Attributaire</option>
-                                @foreach ($beneficiaries as $item)
-                                    <option value="{{ $item->id }}">{{ $item->name }} {{ $item->lastname }}
-                                        {{ $item->firstname }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
                         <input type="hidden" value="{{ $budgeting->id }}" name="budgeting">
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-mdb-dismiss="modal">Fermer</button>
@@ -230,7 +209,7 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="addDep" tabindex="-1" aria-labelledby="addModalLabelDep" aria-hidden="true">
+    <div class="modal fade" id="addSend" tabindex="-1" aria-labelledby="addModalLabelDep" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -238,12 +217,12 @@
                     <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="{{ route('transactions.store') }}">
+                    <form method="POST" action="{{ route('plannings.store') }}">
                         <!-- Name input -->
                         @csrf
                         <div class="form-outline mb-4">
                             <textarea rows="3" required="required" name="description" id="description" class="form-control"></textarea>
-                            <label class="form-label" for="description">Libellé</label>
+                            <label class="form-label" for="description">Description</label>
                         </div>
                         <div class="d-flex mb-4">
                             <div class="form-outline mr-4">
@@ -260,22 +239,6 @@
                                     @if ($item->typeRubrique->state != 1)
                                         <option value="{{ $item->id }}">{{ $item->name }}</option>
                                     @endif
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="d-flex mb-4">
-                            <div class="form-outline mr-4">
-                                <input required="required" name="date" type="date" id="date"
-                                    class="form-control" />
-                            </div>
-                        </div>
-                        <div class="mb-4">
-                            <select required="required" name="beneficiary" id="beneficiary" class="form-control">
-                                <option value="">Attributaire</option>
-                                @foreach ($beneficiaries as $item)
-                                    <option value="{{ $item->id }}">{{ $item->name }} {{ $item->lastname }}
-                                        {{ $item->firstname }}
-                                    </option>
                                 @endforeach
                             </select>
                         </div>

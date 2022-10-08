@@ -18,9 +18,9 @@ class BudgetingController extends Controller
     public function index()
     {
         $budgetings = Budgeting::all();
-        $status = Status::all();
-        $currencies = Currency::all();
-        $years = Year::all();
+        $status = Status::orderBy('name', 'ASC')->get();
+        $currencies = Currency::orderBy('currency', 'ASC')->get();
+        $years = Year::orderBy('year', 'ASC')->get();
         return view('ui.budgeting.all', [
             'budgetings' => $budgetings,
             'status' => $status,

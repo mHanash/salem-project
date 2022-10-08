@@ -20,24 +20,24 @@
                 <div class="row align-items-center" style="margin-bottom: 5px">
                     <div class="col-md-9">
                         <h5 class="page-title text-primary">
-                            Détails de la transaction
+                            Détails de la prévision
                         </h5>
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row mt-10">
                 <div class="col-md-8">
-                    <form method="POST" action="{{ route('transactions.update', ['id' => $transaction->id]) }}">
+                    <form method="POST" action="{{ route('plannings.update', ['id' => $lineBudgeting->id]) }}">
                         <!-- Name input -->
                         @csrf
                         <div class="form-outline mb-4">
-                            <textarea rows="3" required="required" name="description" id="description" class="form-control">{{ $transaction->description }}</textarea>
-                            <label class="form-label" for="description">Libellé</label>
+                            <textarea rows="3" required="required" name="description" id="description" class="form-control">{{ $lineBudgeting->description }}</textarea>
+                            <label class="form-label" for="description">Description</label>
                         </div>
                         <div class="d-flex mb-4">
                             <div class="form-outline mr-4">
-                                <input required="required" name="amount" value="{{ $transaction->amount }}" type="number"
-                                    id="amount" class="form-control" />
+                                <input value="{{ $lineBudgeting->amount }}" required="required" name="amount"
+                                    type="number" id="amount" class="form-control" />
                                 <label class="form-label" for="amount">Montant</label>
                             </div>
                             <div class="text-danger"> - {{ $budgeting->currency->currency }}</div>
@@ -46,8 +46,8 @@
                             <select required="required" name="rubrique" id="rubrique" class="form-control">
                                 <option value="">Compte</option>
                                 @foreach ($rubriques as $item)
-                                    @if (true)
-                                        @if ($item->id == $transaction->rubrique->id)
+                                    @if ($item->typeRubrique->state == $lineBudgeting->rubrique->typeRubrique->state)
+                                        @if ($item->id == $lineBudgeting->rubrique->id)
                                             <option selected value="{{ $item->id }}">{{ $item->name }}</option>
                                         @else
                                             <option value="{{ $item->id }}">{{ $item->name }}</option>
@@ -56,33 +56,10 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="d-flex mb-4">
-                            <div class="form-outline mr-4">
-                                <input required="required" value="{{ $transaction->date }}" name="date" type="date"
-                                    id="date" class="form-control" />
-                            </div>
-                        </div>
-                        <div class="mb-4">
-                            <select required="required" name="beneficiary" id="beneficiary" class="form-control">
-                                <option value="">Attributaire</option>
-                                @foreach ($beneficiaries as $item)
-                                    @if ($item->id == $transaction->beneficiary->id)
-                                        <option selected value="{{ $item->id }}">{{ $item->name }}
-                                            {{ $item->lastname }}
-                                            {{ $item->firstname }}
-                                        </option>
-                                    @else
-                                        <option value="{{ $item->id }}">{{ $item->name }} {{ $item->lastname }}
-                                            {{ $item->firstname }}
-                                        </option>
-                                    @endif
-                                @endforeach
-                            </select>
-                        </div>
-                        <input type="hidden" name="budgeting" value="{{ $budgeting->id }}">
+                        <input type="hidden" value="{{ $budgeting->id }}" name="budgeting">
                         <div class="d-flex">
-                            <a href="{{ route('transactions', ['id' => $budgeting->id]) }}" class="btn btn-danger"
-                                style="margin-right: 5px">Retour</a>
+                            <a href="{{ route('plannings', ['id' => $budgeting->id]) }}" style="margin-right: 5px"
+                                class="btn btn-danger">Fermer</a>
                             <button type="submit" class="btn btn-primary">Modifier</button>
                         </div>
                     </form>

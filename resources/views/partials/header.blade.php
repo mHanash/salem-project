@@ -13,7 +13,7 @@
             <a class="navbar-brand" href="#">
                 <!--<img src="https://mdbootstrap.com/img/logo/mdb-transaprent-noshadows.png" height="25" alt=""
                     loading="lazy" />-->
-                SALEM APP
+                SALEM FIN
             </a>
             <!-- Search form -->
             <form class="d-none d-md-flex input-group w-auto my-auto">

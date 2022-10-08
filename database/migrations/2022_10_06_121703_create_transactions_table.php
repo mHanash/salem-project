@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->string('description');
-            $table->decimal('amount');
+            $table->decimal('amount', 18, 2);
             $table->foreignId('rubrique_id')->constrained();
             $table->softDeletes();
             $table->timestamps();

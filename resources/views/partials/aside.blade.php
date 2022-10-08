@@ -5,7 +5,8 @@
         <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-white">
             <div class="position-sticky">
                 <div class="list-group list-group-flush mx-3 mt-4">
-                    <a href="{{ route('home') }}" class="list-group-item list-group-item-action py-2 ripple"
+                    <a href="{{ route('home') }}"
+                        class="{{ '/' == request()->path() ? 'active' : '' }} list-group-item list-group-item-action py-2 ripple"
                         aria-current="true">
                         <i class="fas fa-tachometer-alt fa-fw me-3"></i><span>Tableau de bord</span>
                     </a>
@@ -13,42 +14,49 @@
                         <i class="fas fa-chart-area fa-fw me-3"></i><span>Rapport</span>
                     </a>
                     <a href="{{ route('transactions.home') }}"
-                        class="list-group-item list-group-item-action py-2 ripple">
-                        <i class="fas fa-chart-area fa-fw me-3"></i><span>Journal</span>
+                        class="{{ str_contains(request()->path(), 'transaction') ? 'active' : '' }}  list-group-item list-group-item-action py-2 ripple">
+                        <i class="fas fa-exchange-alt me-3"></i><span>Journal</span>
                     </a>
-                    <a href="#" class="list-group-item list-group-item-action py-2 ripple">
+                    <a href="{{ route('plannings.home') }}"
+                        class="{{ str_contains(request()->path(), 'planning') ? 'active' : '' }} list-group-item list-group-item-action py-2 ripple">
                         <i class="fas fa-chart-area fa-fw me-3"></i><span>Prévision</span>
                     </a>
-                    <a href="{{ route('accounts') }}" class="list-group-item list-group-item-action py-2 ripple">
+                    <a href="{{ route('accounts') }}"
+                        class="{{ str_contains(request()->path(), 'account') ? 'active' : '' }} list-group-item list-group-item-action py-2 ripple">
                         <i class="fas fa-chart-area fa-fw me-3"></i><span>Compte</span>
                     </a>
                     <a href="#" class="list-group list-group-item-action py-2 ripple">
                         <span>Parametre</span>
-                        <a href="{{ route('budgetings') }}" class="list-group-item list-group-item-action py-2 ripple">
+                        <a href="{{ route('budgetings') }}"
+                            class="{{ str_contains(request()->path(), 'budgeting') ? 'active' : '' }} list-group-item list-group-item-action py-2 ripple">
                             <i class="fas fa-chart-area fa-fw me-3"></i><span>Budget</span>
                         </a>
                         <a href="{{ route('beneficiaries') }}"
-                            class="list-group-item list-group-item-action py-2 ripple">
+                            class="{{ str_contains(request()->path(), 'beneficiary') ? 'active' : '' }} list-group-item list-group-item-action py-2 ripple">
                             <i class="fas fa-chart-area fa-fw me-3"></i><span>Agents</span>
                         </a>
                         <a href="{{ route('typeBeneficiaries') }}"
-                            class="list-group-item list-group-item-action py-2 ripple">
+                            class="{{ str_contains(request()->path(), 'type_beneficiary') ? 'active' : '' }} list-group-item list-group-item-action py-2 ripple">
                             <i class="fas fa-chart-area fa-fw me-3"></i><span>Type agents</span>
                         </a>
-                        <a href="{{ route('currencies') }}" class="list-group-item list-group-item-action py-2 ripple">
-                            <i class="fas fa-chart-area fa-fw me-3"></i><span>Devise</span>
+                        <a href="{{ route('currencies') }}"
+                            class="{{ str_contains(request()->path(), 'currency') ? 'active' : '' }} list-group-item list-group-item-action py-2 ripple">
+                            <i class="fas fa-money-bill me-3"></i><span>Devise</span>
                         </a>
-                        <a href="{{ route('jobs') }}" class="list-group-item list-group-item-action py-2 ripple">
+                        <a href="{{ route('jobs') }}"
+                            class="{{ str_contains(request()->path(), 'job') ? 'active' : '' }} list-group-item list-group-item-action py-2 ripple">
                             <i class="fas fa-chart-area fa-fw me-3"></i><span>Postes</span>
                         </a>
                         <a href="{{ route('typeAccounts') }}"
-                            class="list-group-item list-group-item-action py-2 ripple">
+                            class="{{ str_contains(request()->path(), 'type_account') ? 'active' : '' }} list-group-item list-group-item-action py-2 ripple">
                             <i class="fas fa-chart-area fa-fw me-3"></i><span>Type de compte</span>
                         </a>
                         <a href="{{ route('years') }}" class="list-group-item list-group-item-action py-2 ripple">
-                            <i class="fas fa-chart-area fa-fw me-3"></i><span>Année</span>
+                            <i
+                                class="{{ str_contains(request()->path(), 'years') ? 'active' : '' }} fas fa-chart-area fa-fw me-3"></i><span>Année</span>
                         </a>
-                        <a href="{{ route('status') }}" class="list-group-item list-group-item-action py-2 ripple">
+                        <a href="{{ route('status') }}"
+                            class="{{ str_contains(request()->path(), 'status') ? 'active' : '' }} list-group-item list-group-item-action py-2 ripple">
                             <i class="fas fa-chart-area fa-fw me-3"></i><span>Status</span>
                         </a>
                         <a href="#" class="list-group-item list-group-item-action py-2 ripple">

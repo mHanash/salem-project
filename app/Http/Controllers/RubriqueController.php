@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Rubrique;
 use App\Models\TypeRubrique;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class RubriqueController extends Controller
 {
@@ -15,11 +16,22 @@ class RubriqueController extends Controller
      */
     public function index()
     {
-        $rubriques = Rubrique::all();
+        $rubriques = DB::table('rubriques')->paginate(10);
+        $data = [];
+        foreach ($rubriques as $value) {
+            $type = TypeRubrique::find($value->type_rubrique_id);
+            array_push($data, [
+                'id' => $value->id,
+                'name' => $value->name,
+                'code' => $value->code,
+                'type' => $type->name,
+            ]);
+        }
         $typeRubriques = TypeRubrique::all();
         return view('ui.rubrique.all', [
             'rubriques' => $rubriques,
             'typeRubriques' => $typeRubriques,
+            'data' => $data,
         ]);
     }
 

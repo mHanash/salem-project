@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('line_budgetings', function (Blueprint $table) {
             $table->id();
-            $table->decimal('amount');
+            $table->decimal('amount', 18, 2);
             $table->string('description')->nullable();
             $table->foreignId('budgeting_id')->constrained();
             $table->softDeletes();
