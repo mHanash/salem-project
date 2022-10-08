@@ -10,7 +10,7 @@
                         aria-current="true">
                         <i class="fas fa-tachometer-alt fa-fw me-3"></i><span>Tableau de bord</span>
                     </a>
-                    <a href="#" class="list-group-item list-group-item-action py-2 ripple">
+                    <a href="{{ route('repportings.home') }}" class="{{ str_contains(request()->path(), 'repporting') ? 'active' : '' }} list-group-item list-group-item-action py-2 ripple">
                         <i class="fas fa-chart-area fa-fw me-3"></i><span>Rapport</span>
                     </a>
                     <a href="{{ route('transactions.home') }}"
@@ -22,7 +22,7 @@
                         <i class="fas fa-chart-area fa-fw me-3"></i><span>Prévision</span>
                     </a>
                     <a href="{{ route('accounts') }}"
-                        class="{{ str_contains(request()->path(), 'account') ? 'active' : '' }} list-group-item list-group-item-action py-2 ripple">
+                        class="{{ str_contains(request()->path(), 'accounts') ? 'active' : '' }} list-group-item list-group-item-action py-2 ripple">
                         <i class="fas fa-chart-area fa-fw me-3"></i><span>Compte</span>
                     </a>
                     <a href="#" class="list-group list-group-item-action py-2 ripple">
@@ -32,7 +32,7 @@
                             <i class="fas fa-chart-area fa-fw me-3"></i><span>Budget</span>
                         </a>
                         <a href="{{ route('beneficiaries') }}"
-                            class="{{ str_contains(request()->path(), 'beneficiary') ? 'active' : '' }} list-group-item list-group-item-action py-2 ripple">
+                            class="{{ str_contains(request()->path(), 'beneficiaries') ? 'active' : '' }} list-group-item list-group-item-action py-2 ripple">
                             <i class="fas fa-chart-area fa-fw me-3"></i><span>Agents</span>
                         </a>
                         <a href="{{ route('typeBeneficiaries') }}"
@@ -51,9 +51,8 @@
                             class="{{ str_contains(request()->path(), 'type_account') ? 'active' : '' }} list-group-item list-group-item-action py-2 ripple">
                             <i class="fas fa-chart-area fa-fw me-3"></i><span>Type de compte</span>
                         </a>
-                        <a href="{{ route('years') }}" class="list-group-item list-group-item-action py-2 ripple">
-                            <i
-                                class="{{ str_contains(request()->path(), 'years') ? 'active' : '' }} fas fa-chart-area fa-fw me-3"></i><span>Année</span>
+                        <a href="{{ route('years') }}" class="{{ str_contains(request()->path(), 'years') ? 'active' : '' }} list-group-item list-group-item-action py-2 ripple">
+                            <i class=" fas fa-chart-area fa-fw me-3"></i><span>Année</span>
                         </a>
                         <a href="{{ route('status') }}"
                             class="{{ str_contains(request()->path(), 'status') ? 'active' : '' }} list-group-item list-group-item-action py-2 ripple">

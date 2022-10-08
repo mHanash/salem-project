@@ -5,6 +5,7 @@ use App\Http\Controllers\BudgetingController;
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\LineBudgetingController;
+use App\Http\Controllers\RepportingController;
 use App\Http\Controllers\RubriqueController;
 use App\Http\Controllers\StatusController;
 use App\Http\Controllers\TransactionController;
@@ -35,11 +36,11 @@ Route::delete('type_beneficiary/{id}', [TypeBeneficiaryController::class, 'destr
 Route::get('type_beneficiary/{id}', [TypeBeneficiaryController::class, 'show'])->name('typeBeneficiaries.show');
 Route::post('type_beneficiary/update/{id}', [TypeBeneficiaryController::class, 'update'])->name('typeBeneficiaries.update');
 
-Route::get('beneficiary', [BeneficiaryController::class, 'index'])->name('beneficiaries');
-Route::post('beneficiary', [BeneficiaryController::class, 'store'])->name('beneficiaries.store');
-Route::delete('beneficiary/{id}', [BeneficiaryController::class, 'destroy'])->name('beneficiaries.destroy');
-Route::get('beneficiary/{id}', [BeneficiaryController::class, 'show'])->name('beneficiaries.show');
-Route::post('beneficiary/update/{id}', [BeneficiaryController::class, 'update'])->name('beneficiaries.update');
+Route::get('beneficiaries', [BeneficiaryController::class, 'index'])->name('beneficiaries');
+Route::post('beneficiaries', [BeneficiaryController::class, 'store'])->name('beneficiaries.store');
+Route::delete('beneficiaries/{id}', [BeneficiaryController::class, 'destroy'])->name('beneficiaries.destroy');
+Route::get('beneficiaries/{id}', [BeneficiaryController::class, 'show'])->name('beneficiaries.show');
+Route::post('beneficiaries/update/{id}', [BeneficiaryController::class, 'update'])->name('beneficiaries.update');
 
 Route::get('job', [JobController::class, 'index'])->name('jobs');
 Route::post('job', [JobController::class, 'store'])->name('jobs.store');
@@ -59,11 +60,11 @@ Route::delete('currency/{id}', [CurrencyController::class, 'destroy'])->name('cu
 Route::get('currency/{id}', [CurrencyController::class, 'show'])->name('currencies.show');
 Route::post('currency/update/{id}', [CurrencyController::class, 'update'])->name('currencies.update');
 
-Route::get('account', [RubriqueController::class, 'index'])->name('accounts');
-Route::post('account', [RubriqueController::class, 'store'])->name('accounts.store');
-Route::delete('account/{id}', [RubriqueController::class, 'destroy'])->name('accounts.destroy');
-Route::get('account/{id}', [RubriqueController::class, 'show'])->name('accounts.show');
-Route::post('account/update/{id}', [RubriqueController::class, 'update'])->name('accounts.update');
+Route::get('accounts', [RubriqueController::class, 'index'])->name('accounts');
+Route::post('accounts', [RubriqueController::class, 'store'])->name('accounts.store');
+Route::delete('accounts/{id}', [RubriqueController::class, 'destroy'])->name('accounts.destroy');
+Route::get('accounts/{id}', [RubriqueController::class, 'show'])->name('accounts.show');
+Route::post('accounts/update/{id}', [RubriqueController::class, 'update'])->name('accounts.update');
 
 Route::get('transaction/{id}', [TransactionController::class, 'show'])->name('transactions.show')->where('id', '[0-9]+');
 Route::get('transaction/details/{id}', [TransactionController::class, 'index'])->name('transactions')->where('id', '[0-9]+');
@@ -96,6 +97,13 @@ Route::post('planning', [LineBudgetingController::class, 'store'])->name('planni
 Route::delete('planning/{id}', [LineBudgetingController::class, 'destroy'])->name('plannings.destroy');
 Route::get('planning/{id}', [LineBudgetingController::class, 'show'])->name('plannings.show');
 Route::post('planning/update/{id}', [LineBudgetingController::class, 'update'])->name('plannings.update')->where('id', '[0-9]+');
+
+Route::get('repporting/details/{id}', [RepportingController::class, 'index'])->name('repportings');
+Route::get('repporting/home', [RepportingController::class, 'home'])->name('repportings.home');
+Route::post('repporting', [RepportingController::class, 'store'])->name('repportings.store');
+Route::delete('repporting/{id}', [RepportingController::class, 'destroy'])->name('repportings.destroy');
+Route::get('repporting/{id}', [RepportingController::class, 'show'])->name('repportings.show');
+Route::post('repporting/update/{id}', [RepportingController::class, 'update'])->name('repportings.update')->where('id', '[0-9]+');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

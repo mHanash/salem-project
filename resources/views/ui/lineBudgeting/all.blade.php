@@ -65,7 +65,7 @@
                                                 @endphp
                                                 <td style="font-size:10px">{{ $item->rubrique->code }}</td>
                                                 <td style="font-size:10px">{{ $item->rubrique->name }}</td>
-                                                <td style="font-size:10px">{{ $item->amount }}
+                                                <td style="font-size:10px" class="numberFormat">{{ $item->amount }}
                                                     {{ $budgeting->currency->currency }}</td>
                                                 <td class="d-flex">
                                                     <a title="Afficher" style="color: #fff;margin-right: 5px"
@@ -89,8 +89,9 @@
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <th colspan="3">Total</th>
-                                        <th scope="col">{{ $total }} {{ $budgeting->currency->currency }}</th>
+                                        <th colspan="2">Total</th>
+                                        <th colspan="2" scope="col">
+                                            <span class="numberFormat">{{ $total }}</span> {{ $budgeting->currency->currency }}</th>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -126,7 +127,7 @@
                                                 @endphp
                                                 <td style="font-size:10px">{{ $item->rubrique->code }}</td>
                                                 <td style="font-size:10px">{{ $item->rubrique->name }}</td>
-                                                <td style="font-size:10px">{{ $item->amount }}
+                                                <td style="font-size:10px" class="numberFormat">{{ $item->amount }}
                                                     {{ $budgeting->currency->currency }}</td>
                                                 <td class="d-flex">
                                                     <a title="Afficher" style="color: #fff;margin-right: 5px"
@@ -151,8 +152,11 @@
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <th colspan="3">Total</th>
-                                        <th scope="col">{{ $total }} {{ $budgeting->currency->currency }}</th>
+                                        <tr>
+                                            <th colspan="2">Total</th>
+                                            <th colspan="2" scope="col">
+                                                <span class="numberFormat">{{ $total }}</span> {{ $budgeting->currency->currency }}</th>
+                                        </tr>
                                     </tr>
                                 </tfoot>
                             </table>
