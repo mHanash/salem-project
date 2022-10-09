@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" />
     <!-- MDB -->
     <link rel="stylesheet" href="{{ asset('css/mdb.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/tableexport.min.css') }}" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
     <!-- Custom styles -->
     <link rel="stylesheet" href="{{ asset('css/admin.css') }}" />

@@ -17,14 +17,26 @@
                 </div>
             @endif
             <div class="page-breadcrumb">
-                <div class="row align-items-center" style="margin-bottom: 5px">
-                    <div class="col-md-9">
-                        <h5 class="page-title text-primary">
-                            Journal des transactions, Budget : {{ $budgeting->startYear->year }} -
-                            {{ $budgeting->endYear->year }}
-                        </h5>
+                <form action="{{ route('transactions', ['id' => $budgeting->id]) }}" method="get">
+                    <div class="row align-items-center" style="margin-bottom: 5px">
+                        <div class="col-md-6 pt-1">
+                            <h5 class="page-title text-primary">
+                                Journal des transactions, Budget : {{ $budgeting->startYear->year }} -
+                                {{ $budgeting->endYear->year }}
+                            </h5>
+                        </div>
+                        <div class="col-md-4 pt-1 pb-1">
+                            <div class="input-group input-daterange">
+                                <input value="{{ $from }}" name='from' type="date" class="form-control">
+                                <input value="{{ $to }}" name='to' type="date" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-2 pt-1 pb-1">
+                            <button type="submit" href="" style="color: #fff" class="btn btn-sm btn-info"><i
+                                    class="fas fa-filter"></i> Filter</button>
+                        </div>
                     </div>
-                </div>
+                </form>
                 <div class="row align-items-center" style="margin-bottom: 10px">
                     <div class="col-md-6">
                         <button data-mdb-toggle="modal" data-mdb-target="#addRec" style="float: right" type="button"
@@ -92,7 +104,9 @@
                                 <tfoot>
                                     <tr>
                                         <th colspan="3">Total</th>
-                                        <th colspan="2" scope="col"><span class="numberFormat">{{ $total }}</span>{{ $budgeting->currency->currency }}</th>
+                                        <th colspan="2" scope="col"><span
+                                                class="numberFormat">{{ $total }}</span>{{ $budgeting->currency->currency }}
+                                        </th>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -141,7 +155,8 @@
                                                         action="{{ route('transactions.destroy', ['id' => $item->id]) }}"
                                                         method="POST">
                                                         @csrf
-                                                        <input type="hidden" name="id" value="{{ $item->id }}">
+                                                        <input type="hidden" name="id"
+                                                            value="{{ $item->id }}">
                                                         <input type="hidden" name="_method" value="DELETE">
                                                         <button title="Supprimer" style="color: #fff"
                                                             class="btn btn-danger btn-sm "><i
@@ -156,7 +171,9 @@
                                 <tfoot>
                                     <tr>
                                         <th colspan="3">Total</th>
-                                        <th colspan="2" scope="col"><span class="numberFormat">{{ $total }}</span> {{ $budgeting->currency->currency }}</th>
+                                        <th colspan="2" scope="col"><span
+                                                class="numberFormat">{{ $total }}</span>
+                                            {{ $budgeting->currency->currency }}</th>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -181,6 +198,12 @@
                     <form method="POST" action="{{ route('transactions.store') }}">
                         <!-- Name input -->
                         @csrf
+                        <div class="d-flex mb-4">
+                            <div class="form-outline mr-4">
+                                <input required="required" name="date" type="date" id="date"
+                                    class="form-control" />
+                            </div>
+                        </div>
                         <div class="form-outline mb-4">
                             <textarea rows="3" required="required" name="description" id="description" class="form-control"></textarea>
                             <label class="form-label" for="description">Libellé</label>
@@ -202,12 +225,6 @@
                                     @endif
                                 @endforeach
                             </select>
-                        </div>
-                        <div class="d-flex mb-4">
-                            <div class="form-outline mr-4">
-                                <input required="required" name="date" type="date" id="date"
-                                    class="form-control" />
-                            </div>
                         </div>
                         <div class="mb-4">
                             <select required="required" name="beneficiary" id="beneficiary" class="form-control">
@@ -240,6 +257,12 @@
                     <form method="POST" action="{{ route('transactions.store') }}">
                         <!-- Name input -->
                         @csrf
+                        <div class="d-flex mb-4">
+                            <div class="form-outline mr-4">
+                                <input required="required" name="date" type="date" id="date"
+                                    class="form-control" />
+                            </div>
+                        </div>
                         <div class="form-outline mb-4">
                             <textarea rows="3" required="required" name="description" id="description" class="form-control"></textarea>
                             <label class="form-label" for="description">Libellé</label>
@@ -261,12 +284,6 @@
                                     @endif
                                 @endforeach
                             </select>
-                        </div>
-                        <div class="d-flex mb-4">
-                            <div class="form-outline mr-4">
-                                <input required="required" name="date" type="date" id="date"
-                                    class="form-control" />
-                            </div>
                         </div>
                         <div class="mb-4">
                             <select required="required" name="beneficiary" id="beneficiary" class="form-control">

@@ -16,7 +16,7 @@
             <div class="row">
                 <div class="col-md-8">
                     <ul class="list-group">
-                        <li class="list-group-item">Rubriaue : {{ $line_budgeting->rubrique->name }}</li>
+                        <li class="list-group-item">Rubrique : {{ $line_budgeting->rubrique->name }}</li>
                         <li class="list-group-item">Montant planifié : <span
                                 class="numberFormat">{{ $line_budgeting->amount }}
                                 {{ $budgeting->currency->currency }}</span></li>

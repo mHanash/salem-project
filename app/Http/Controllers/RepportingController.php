@@ -7,6 +7,7 @@ use App\Models\LineBudgeting;
 use App\Models\Rubrique;
 use App\Models\Status;
 use App\Models\Transaction;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class RepportingController extends Controller
@@ -32,12 +33,24 @@ class RepportingController extends Controller
     public function index(Request $request)
     {
         $budgeting = Budgeting::find($request->id);
-        $transactions = Transaction::where('budgeting_id', '=', $request->id)->get();
         $line_budgetings = LineBudgeting::where('budgeting_id', '=', $request->id)->get();
+        if ($request->from || $request->to) {
+            if ($request->from && !$request->to) {
+                $transactions = Transaction::where('budgeting_id', '=', $request->id)->where('date', '>=', $request->from)->get();
+            } else if (!$request->from && $request->to) {
+                $transactions = Transaction::where('budgeting_id', '=', $request->id)->where('date', '<=', $request->to)->get();
+            } else {
+                $transactions = Transaction::where('budgeting_id', '=', $request->id)->whereBetween('date', [$request->from, $request->to])->get();
+            }
+        } else {
+            $transactions = Transaction::where('budgeting_id', '=', $request->id)->get();
+        }
         return view('ui.repporting.all', [
             'transactions' => $transactions,
             'line_budgetings' => $line_budgetings,
             'budgeting' => $budgeting,
+            'from' => $request->from,
+            'to' => $request->to,
         ]);
     }
 
@@ -81,14 +94,17 @@ class RepportingController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Transaction  $transaction
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function showTransaction(Request $request, Transaction $transaction)
     {
-        //
+        $transaction = Transaction::find($request->id);
+        return view('ui.repporting.showTransaction', [
+            'transaction' => $transaction,
+        ]);
     }
 
     /**

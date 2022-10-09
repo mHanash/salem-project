@@ -137,6 +137,18 @@
                                 @endforeach
                             </select>
                         </div>
+                        <div class="mb-4">
+                            <p style="font-size: 10px; margin-bottom:-2px;margin-top:2px"><i>Help: Veuillez maintenir la
+                                    touche CTRL
+                                    (command) pour
+                                    séléctionner plusieurs</i></p>
+                            <select multiple required="required" name="rubrique[]" id="rubrique" class="form-control">
+                                <option disabled value="">Categories utilisés</option>
+                                @foreach ($rubriques as $item)
+                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-mdb-dismiss="modal">Fermer</button>
                             <button type="submit" class="btn btn-primary">Enregistrer</button>

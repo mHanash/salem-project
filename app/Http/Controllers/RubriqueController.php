@@ -16,7 +16,7 @@ class RubriqueController extends Controller
      */
     public function index()
     {
-        $rubriques = DB::table('rubriques')->paginate(10);
+        $rubriques = DB::table('rubriques')->orderBy('name', 'ASC')->paginate(10);
         $data = [];
         foreach ($rubriques as $value) {
             $type = TypeRubrique::find($value->type_rubrique_id);

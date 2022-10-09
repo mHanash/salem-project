@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\TypeRubrique;
 use App\Models\LineBudgeting;
 use App\Models\Transaction;
+use App\Models\Budgeting;
 
 class Rubrique extends Model
 {
@@ -31,5 +32,10 @@ class Rubrique extends Model
     public function typeRubrique()
     {
         return $this->belongsTo(TypeRubrique::class);
+    }
+
+    public function budgetings()
+    {
+        return $this->belongsToMany(Budgeting::class);
     }
 }

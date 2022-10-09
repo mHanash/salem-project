@@ -28,14 +28,26 @@ class TransactionController extends Controller
     public function index(Request $request)
     {
         $budgeting = Budgeting::find($request->id);
-        $transactions = Transaction::orderBy('date', 'ASC')->get();
-        $rubriques = Rubrique::orderBy('name', 'ASC')->get();
+        $rubriques = $budgeting->rubriques()->orderBy('name', 'ASC')->get();
         $beneficiaries = Beneficiary::orderBy('name', 'ASC')->get();;
+        if ($request->from || $request->to) {
+            if ($request->from && !$request->to) {
+                $transactions = Transaction::where('budgeting_id', '=', $request->id)->where('date', '>=', $request->from)->get();
+            } else if (!$request->from && $request->to) {
+                $transactions = Transaction::where('budgeting_id', '=', $request->id)->where('date', '<=', $request->to)->get();
+            } else {
+                $transactions = Transaction::where('budgeting_id', '=', $request->id)->whereBetween('date', [$request->from, $request->to])->get();
+            }
+        } else {
+            $transactions = Transaction::where('budgeting_id', '=', $request->id)->get();
+        }
         return view('ui.transaction.all', [
             'transactions' => $transactions,
             'budgeting' => $budgeting,
             'rubriques' => $rubriques,
             'beneficiaries' => $beneficiaries,
+            'from' => $request->from,
+            'to' => $request->to,
         ]);
     }
 
@@ -80,7 +92,7 @@ class TransactionController extends Controller
     {
         $transaction = Transaction::find($request->id);
         $budgeting = $transaction->budgeting;
-        $rubriques = Rubrique::orderBy('name', 'ASC')->get();
+        $rubriques = $budgeting->rubriques()->orderBy('name', 'ASC')->get();
         $beneficiaries = Beneficiary::orderBy('name', 'ASC')->get();;
         return view('ui.transaction.show', [
             'transaction' => $transaction,

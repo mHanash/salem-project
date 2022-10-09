@@ -31,8 +31,8 @@ class LineBudgetingController extends Controller
     public function index(Request $request)
     {
         $budgeting = Budgeting::find($request->id);
-        $lineBudgetings = LineBudgeting::all();
-        $rubriques = Rubrique::orderBy('name', 'ASC')->get();
+        $lineBudgetings = LineBudgeting::where('budgeting_id', '=', $budgeting->id)->get();
+        $rubriques = $budgeting->rubriques()->orderBy('name', 'ASC')->get();
         return view('ui.lineBudgeting.all', [
             'rubriques' => $rubriques,
             'lineBudgetings' => $lineBudgetings,
@@ -79,7 +79,7 @@ class LineBudgetingController extends Controller
     {
         $lineBudgeting = LineBudgeting::find($request->id);
         $budgeting = $lineBudgeting->budgeting;
-        $rubriques = Rubrique::orderBy('name', 'ASC')->get();
+        $rubriques = $budgeting->rubriques()->orderBy('name', 'ASC')->get();
         return view('ui.lineBudgeting.show', [
             'lineBudgeting' => $lineBudgeting,
             'rubriques' => $rubriques,

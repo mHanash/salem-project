@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Year;
 use App\Models\Currency;
+use App\Models\Rubrique;
 use App\Models\LineBudgeting;
 use App\Models\Status;
 use App\Models\Transaction;
@@ -20,7 +21,7 @@ class Budgeting extends Model
         'start_year_id',
         'end_year_id',
         'currency_id',
-        'status_id'
+        'status_id',
     ];
 
     public function startYear()
@@ -49,5 +50,9 @@ class Budgeting extends Model
     public function transactions()
     {
         return $this->hasMany(Transaction::class);
+    }
+    public function rubriques()
+    {
+        return $this->belongsToMany(Rubrique::class);
     }
 }

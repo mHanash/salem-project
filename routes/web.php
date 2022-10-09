@@ -103,6 +103,7 @@ Route::get('repporting/home', [RepportingController::class, 'home'])->name('repp
 Route::post('repporting', [RepportingController::class, 'store'])->name('repportings.store');
 Route::delete('repporting/{id}', [RepportingController::class, 'destroy'])->name('repportings.destroy');
 Route::get('repporting/{id}', [RepportingController::class, 'show'])->name('repportings.show');
+Route::get('repporting/details/show/{id}', [RepportingController::class, 'showTransaction'])->name('repportings.transaction.show');
 Route::post('repporting/update/{id}', [RepportingController::class, 'update'])->name('repportings.update')->where('id', '[0-9]+');
 
 Route::get('/dashboard', function () {

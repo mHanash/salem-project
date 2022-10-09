@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Budgeting;
 use App\Models\Currency;
+use App\Models\Rubrique;
 use App\Models\Status;
 use App\Models\Year;
 use Illuminate\Http\Request;
@@ -17,6 +18,7 @@ class BudgetingController extends Controller
      */
     public function index()
     {
+        $rubriques = Rubrique::orderBy('name', 'ASC');
         $budgetings = Budgeting::all();
         $status = Status::orderBy('name', 'ASC')->get();
         $currencies = Currency::orderBy('currency', 'ASC')->get();
@@ -26,6 +28,7 @@ class BudgetingController extends Controller
             'status' => $status,
             'currencies' => $currencies,
             'years' => $years,
+            'rubriques' => $rubriques,
         ]);
     }
 
@@ -47,6 +50,7 @@ class BudgetingController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request->rubrique);
         if ($budgeting = Budgeting::create([
             'description' => $request->description,
             'start_year_id' => $request->startYear,
@@ -54,6 +58,7 @@ class BudgetingController extends Controller
             'currency_id' => $request->currency,
             'status_id' => $request->status,
         ])) {
+            $budgeting->rubriques()->attach($request->rubrique);
             return redirect()->back()->with('success', 'Elément ajouté');
         }
         return redirect()->back()->with('fail', 'Une erreur est survenue lors de l\'enregistrement');
@@ -69,13 +74,17 @@ class BudgetingController extends Controller
     {
         $status = Status::all();
         $currencies = Currency::all();
+        $rubriques = Rubrique::orderBy('name', 'ASC')->get();
         $years = Year::all();
         $budgeting = Budgeting::find($request->id);
+        $rubriquesOwn = $budgeting->rubriques()->orderBy('name', 'ASC')->get();
         return view('ui.budgeting.show', [
+            'currencies' => $currencies,
+            'rubriques' => $rubriques,
             'budgeting' => $budgeting,
             'status' => $status,
-            'currencies' => $currencies,
             'years' => $years,
+            'rubriquesOwn' => $rubriquesOwn,
         ]);
     }
 
@@ -106,11 +115,14 @@ class BudgetingController extends Controller
             'end_year_id' => $request->endYear,
             'currency_id' => $request->currency,
             'status_id' => $request->status,
-        ])) { {
-                return redirect()->route('budgetings')->with('success', 'Elément modifié');
+        ])) {
+            if ($request->rubriques) {
+                $budgeting->rubriques()->sync($request->rubriques);
             }
-            return redirect()->route('budgetings')->with('fail', 'Une erreur est survenue lors de la modification');
+
+            return redirect()->route('budgetings.show', ['id' => $budgeting->id])->with('success', 'Elément modifié');
         }
+        return redirect()->route('budgetings.show', ['id' => $budgeting->id])->with('fail', 'Une erreur est survenue lors de la modification');
     }
 
     /**
