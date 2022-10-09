@@ -20,10 +20,14 @@
                 <form action="{{ route('transactions', ['id' => $budgeting->id]) }}" method="get">
                     <div class="row align-items-center" style="margin-bottom: 5px">
                         <div class="col-md-6 pt-1">
-                            <h5 class="page-title text-primary">
-                                Journal des transactions, Budget : {{ $budgeting->startYear->year }} -
-                                {{ $budgeting->endYear->year }}
-                            </h5>
+                            <a style="width:63px;font-size:11px;font-weight:bold"
+                                class="btn text-center text-light text-bg-secondary d-flex nav-link"
+                                href="{{ route('transactions.home') }}">
+                                < Retour</a>
+                                    <h5 class="page-title text-primary">
+                                        Journal des transactions, Budget : {{ $budgeting->startYear->year }} -
+                                        {{ $budgeting->endYear->year }}
+                                    </h5>
                         </div>
                         <div class="col-md-4 pt-1 pb-1">
                             <div class="input-group input-daterange">

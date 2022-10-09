@@ -19,10 +19,14 @@
             <div class="page-breadcrumb">
                 <div class="row align-items-center" style="margin-bottom: 5px">
                     <div class="col-md-9">
-                        <h5 class="page-title text-primary">
-                            Prévision budgétaire : {{ $budgeting->startYear->year }} -
-                            {{ $budgeting->endYear->year }}
-                        </h5>
+                        <a style="width:63px;font-size:11px;font-weight:bold"
+                            class="btn text-center text-light text-bg-secondary d-flex nav-link"
+                            href="{{ route('plannings.home') }}">
+                            < Retour</a>
+                                <h5 class="page-title text-primary">
+                                    Prévision budgétaire : {{ $budgeting->startYear->year }} -
+                                    {{ $budgeting->endYear->year }}
+                                </h5>
                     </div>
                 </div>
                 <div class="row align-items-center" style="margin-bottom: 10px">
@@ -91,7 +95,9 @@
                                     <tr>
                                         <th colspan="2">Total</th>
                                         <th colspan="2" scope="col">
-                                            <span class="numberFormat">{{ $total }}</span> {{ $budgeting->currency->currency }}</th>
+                                            <span class="numberFormat">{{ $total }}</span>
+                                            {{ $budgeting->currency->currency }}
+                                        </th>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -138,7 +144,8 @@
                                                         action="{{ route('plannings.destroy', ['id' => $item->id]) }}"
                                                         method="POST">
                                                         @csrf
-                                                        <input type="hidden" name="id" value="{{ $item->id }}">
+                                                        <input type="hidden" name="id"
+                                                            value="{{ $item->id }}">
                                                         <input type="hidden" name="_method" value="DELETE">
                                                         <button title="Supprimer" style="color: #fff"
                                                             class="btn btn-danger btn-sm "><i
@@ -152,11 +159,13 @@
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <tr>
-                                            <th colspan="2">Total</th>
-                                            <th colspan="2" scope="col">
-                                                <span class="numberFormat">{{ $total }}</span> {{ $budgeting->currency->currency }}</th>
-                                        </tr>
+                                    <tr>
+                                        <th colspan="2">Total</th>
+                                        <th colspan="2" scope="col">
+                                            <span class="numberFormat">{{ $total }}</span>
+                                            {{ $budgeting->currency->currency }}
+                                        </th>
+                                    </tr>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -197,7 +206,17 @@
                             <select required="required" name="rubrique" id="rubrique" class="form-control">
                                 <option value="">Compte</option>
                                 @foreach ($rubriques as $item)
-                                    @if ($item->typeRubrique->state == 1)
+                                    @php
+                                        $exist = false;
+                                    @endphp
+                                    @foreach ($lineBudgetings as $line)
+                                        @if ($line->rubrique->id == $item->id)
+                                            @php
+                                                $exist = true;
+                                            @endphp
+                                        @endif
+                                    @endforeach
+                                    @if ($item->typeRubrique->state == 1 && !$exist)
                                         <option value="{{ $item->id }}">{{ $item->name }}</option>
                                     @endif
                                 @endforeach
@@ -240,7 +259,17 @@
                             <select required="required" name="rubrique" id="rubrique" class="form-control">
                                 <option value="">Compte</option>
                                 @foreach ($rubriques as $item)
-                                    @if ($item->typeRubrique->state != 1)
+                                    @php
+                                        $exist = false;
+                                    @endphp
+                                    @foreach ($lineBudgetings as $line)
+                                        @if ($line->rubrique->id == $item->id)
+                                            @php
+                                                $exist = true;
+                                            @endphp
+                                        @endif
+                                    @endforeach
+                                    @if ($item->typeRubrique->state != 1 && !$exist)
                                         <option value="{{ $item->id }}">{{ $item->name }}</option>
                                     @endif
                                 @endforeach

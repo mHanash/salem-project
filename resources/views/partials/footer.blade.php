@@ -23,6 +23,18 @@
             $('#default').removeClass('active text-primary')
             $('#nav-rubrique-tab').addClass('active text-primary')
             $('#nav-rubrique').addClass('show active')
+            $('#nav-rubrique-not-tab').removeClass('active text-primary')
+            $('#nav-rubrique-not').removeClass('show active')
+            $('#nav-journal-tab').removeClass('active text-primary')
+            $('#nav-journal').removeClass('active show')
+        })
+        $('#nav-rubrique-not-tab').click(function() {
+            $('#defaultContent').removeClass('show active')
+            $('#default').removeClass('active text-primary')
+            $('#nav-rubrique-not-tab').addClass('active text-primary')
+            $('#nav-rubrique-not').addClass('show active')
+            $('#nav-rubrique-tab').removeClass('active text-primary')
+            $('#nav-rubrique').removeClass('show active')
             $('#nav-journal-tab').removeClass('active text-primary')
             $('#nav-journal').removeClass('active show')
         })
@@ -31,6 +43,8 @@
             $('#default').removeClass('active text-primary')
             $('#nav-journal-tab').addClass('active text-primary')
             $('#nav-journal').addClass('show active')
+            $('#nav-rubrique-not-tab').removeClass('active text-primary')
+            $('#nav-rubrique-not').removeClass('show active')
             $('#nav-rubrique-tab').removeClass('active text-primary')
             $('#nav-rubrique').removeClass('active show')
         })
@@ -40,10 +54,12 @@
             $('#nav-journal-tab').removeClass('active text-primary')
             $('#nav-journal').removeClass('active show')
             $('#defaultContent').addClass('show active')
+            $('#nav-rubrique-not-tab').removeClass('active text-primary')
+            $('#nav-rubrique-not').removeClass('show active')
             $('#default').addClass('active text-primary')
         })
         $('.numberFormat').formatNumber({
-            cents: ' ',
+            cents: '.',
         });
     });
 </script>

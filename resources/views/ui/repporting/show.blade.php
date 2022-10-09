@@ -40,7 +40,6 @@
                                         <th scope="col">Description</th>
                                         <th scope="col">Montant</th>
                                         <th scope="col">Attributaire</th>
-                                        <th scope="col">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -60,25 +59,20 @@
                                                 <th>{{ $i }}</th>
                                                 <td>{{ $item->date }}</td>
                                                 <td>{{ $item->description }}</td>
-                                                <td style="font-size: 10px" class="numberFormat">
-                                                    {{ $item->amount }}
+                                                <td style="font-size: 10px"><span
+                                                        class="numberFormat">{{ $item->amount }}</span>
                                                     {{ $budgeting->currency->currency }}</td>
                                                 <td>{{ $item->beneficiary->name }} {{ $item->beneficiary->lastname }}</td>
-                                                <td class="d-flex">
-                                                    <a title="Afficher" style="color: #fff;margin-right: 5px"
-                                                        href="{{ route('transactions.show', ['id' => $item['id']]) }}"
-                                                        class="btn btn-info btn-sm"><i class="fas fa-eye"></i>
-                                                    </a>
-                                                </td>
                                             </tr>
                                         @endif
                                     @endforeach
                                 </tbody>
                                 <tfoot>
                                     <th colspan="3">TOTAL</th>
-                                    <th colspan="2" class="numberFormat text-danger">
-                                        {{ $total }}
-                                        {{ $budgeting->currency->currency }}</th>
+                                    <th colspan="2" class="text-danger">
+                                        <span class="numberFormat">{{ $total }}</span>
+                                        {{ $budgeting->currency->currency }}
+                                    </th>
                                 </tfoot>
                             </table>
                         @else
