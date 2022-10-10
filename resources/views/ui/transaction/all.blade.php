@@ -1,6 +1,22 @@
 @extends('layouts.main')
 
 @section('content')
+    @php
+        $admin = false;
+        $finan = false;
+    @endphp
+    @foreach (Auth::user()->roles as $role)
+        @if ($role->name == 'ADMIN')
+            @php
+                $admin = true;
+            @endphp
+        @endif
+        @if ($role->name == 'FINANCIAL')
+            @php
+                $finan = true;
+            @endphp
+        @endif
+    @endforeach
     <main style="margin-top: 10px">
         <div class="container pt-4">
             @if (session()->has('success'))
@@ -89,17 +105,20 @@
                                                     <a title="Afficher" style="color: #fff;margin-right: 5px"
                                                         href="{{ route('transactions.show', ['id' => $item->id]) }}"
                                                         class="btn btn-info btn-sm"><i class="fas fa-eye"></i></a>
-                                                    <form
-                                                        onsubmit="return confirm('Voulez-vous vraiment supprimer cet enregistrement ?')"
-                                                        action="{{ route('transactions.destroy', ['id' => $item->id]) }}"
-                                                        method="POST">
-                                                        @csrf
-                                                        <input type="hidden" name="id" value="{{ $item->id }}">
-                                                        <input type="hidden" name="_method" value="DELETE">
-                                                        <button title="Supprimer" style="color: #fff"
-                                                            class="btn btn-danger btn-sm "><i
-                                                                class="far fa-trash-alt"></i></button>
-                                                    </form>
+                                                    @if ($admin)
+                                                        <form
+                                                            onsubmit="return confirm('Voulez-vous vraiment supprimer cet enregistrement ?')"
+                                                            action="{{ route('transactions.destroy', ['id' => $item->id]) }}"
+                                                            method="POST">
+                                                            @csrf
+                                                            <input type="hidden" name="id"
+                                                                value="{{ $item->id }}">
+                                                            <input type="hidden" name="_method" value="DELETE">
+                                                            <button title="Supprimer" style="color: #fff"
+                                                                class="btn btn-danger btn-sm "><i
+                                                                    class="far fa-trash-alt"></i></button>
+                                                        </form>
+                                                    @endif
                                                 </td>
                                             </tr>
                                         @endif
@@ -154,18 +173,20 @@
                                                     <a title="Afficher" style="color: #fff;margin-right: 5px"
                                                         href="{{ route('transactions.show', ['id' => $item->id]) }}"
                                                         class="btn btn-info btn-sm"><i class="fas fa-eye"></i></a>
-                                                    <form
-                                                        onsubmit="return confirm('Voulez-vous vraiment supprimer cet enregistrement ?')"
-                                                        action="{{ route('transactions.destroy', ['id' => $item->id]) }}"
-                                                        method="POST">
-                                                        @csrf
-                                                        <input type="hidden" name="id"
-                                                            value="{{ $item->id }}">
-                                                        <input type="hidden" name="_method" value="DELETE">
-                                                        <button title="Supprimer" style="color: #fff"
-                                                            class="btn btn-danger btn-sm "><i
-                                                                class="far fa-trash-alt"></i></button>
-                                                    </form>
+                                                    @if ($admin)
+                                                        <form
+                                                            onsubmit="return confirm('Voulez-vous vraiment supprimer cet enregistrement ?')"
+                                                            action="{{ route('transactions.destroy', ['id' => $item->id]) }}"
+                                                            method="POST">
+                                                            @csrf
+                                                            <input type="hidden" name="id"
+                                                                value="{{ $item->id }}">
+                                                            <input type="hidden" name="_method" value="DELETE">
+                                                            <button title="Supprimer" style="color: #fff"
+                                                                class="btn btn-danger btn-sm "><i
+                                                                    class="far fa-trash-alt"></i></button>
+                                                        </form>
+                                                    @endif
                                                 </td>
                                             </tr>
                                         @endif

@@ -10,16 +10,18 @@
             </button>
 
             <!-- Brand -->
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="{{ route('home') }}">
                 <img src="{{ asset('images/logo-banking.jpeg') }}" height="25" alt="" loading="lazy" />
                 SALEM FIN
             </a>
             <!-- Search form -->
-            <form class="d-none d-md-flex input-group w-auto my-auto">
-                <input autocomplete="off" type="search" class="form-control rounded" placeholder='Recherche'
-                    style="min-width: 225px" />
-                <span class="input-group-text border-0"><i class="fas fa-search"></i></span>
-            </form>
+            @if (false)
+                <form class="d-none d-md-flex input-group w-auto my-auto">
+                    <input autocomplete="off" type="search" class="form-control rounded" placeholder='Recherche'
+                        style="min-width: 225px" />
+                    <span class="input-group-text border-0"><i class="fas fa-search"></i></span>
+                </form>
+            @endif
 
             <!-- Right links -->
             <ul class="navbar-nav ms-auto d-flex flex-row">

@@ -1,6 +1,22 @@
 @extends('layouts.main')
 
 @section('content')
+    @php
+        $admin = false;
+        $finan = false;
+    @endphp
+    @foreach (Auth::user()->roles as $role)
+        @if ($role->name == 'ADMIN')
+            @php
+                $admin = true;
+            @endphp
+        @endif
+        @if ($role->name == 'FINANCIAL')
+            @php
+                $finan = true;
+            @endphp
+        @endif
+    @endforeach
     <main style="margin-top: 10px">
         <div class="container pt-4">
             @if (session()->has('success'))
@@ -83,7 +99,9 @@
                         <div class="d-flex">
                             <a href="{{ route('transactions', ['id' => $budgeting->id]) }}" class="btn btn-danger"
                                 style="margin-right: 5px">Retour</a>
-                            <button type="submit" class="btn btn-primary">Modifier</button>
+                            @if ($admin)
+                                <button type="submit" class="btn btn-primary">Modifier</button>
+                            @endif
                         </div>
                     </form>
                 </div>
