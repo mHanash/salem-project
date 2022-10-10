@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Job;
 use App\Models\Transaction;
 use App\Models\TypeBeneficiary;
+use App\Models\User;
 
 class Beneficiary extends Model
 {
@@ -35,5 +36,10 @@ class Beneficiary extends Model
     public function transactions()
     {
         return $this->hasMany(Transaction::class);
+    }
+
+    public function user()
+    {
+        return $this->hasOne(User::class);
     }
 }

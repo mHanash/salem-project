@@ -4,9 +4,13 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\User;
 use App\Providers\RouteServiceProvider;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -28,10 +32,16 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request)
     {
+
         $request->authenticate();
 
         $request->session()->regenerate();
-
+        $user = User::where('email', $request->email)->first();
+        if ($user) {
+            if (Hash::check('saSalemFin', $user->password)) {
+                return redirect()->route('newPassword');
+            }
+        }
         return redirect()->intended(RouteServiceProvider::HOME);
     }
 
@@ -49,6 +59,27 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect()->route('login');
+    }
+
+    public function newPassword()
+    {
+        $user = Auth::user();
+        return view('auth.new-password', ['user' => $user]);
+    }
+
+    public function newPasswordStore(Request $request)
+    {
+        $request->validate([
+            'password' => ['required', 'confirmed'],
+        ]);
+        $user = User::find($request->id);
+        if ($user->update([
+            'password' => Hash::make($request->password),
+        ])) {
+            event(new Registered($user));
+            Auth::login($user);
+            return redirect()->intended(RouteServiceProvider::HOME);
+        }
     }
 }
