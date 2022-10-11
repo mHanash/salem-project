@@ -122,7 +122,8 @@ Route::middleware('auth')->group(function () {
     Route::get('repporting/home', [RepportingController::class, 'home'])->name('repportings.home');
     Route::post('repporting', [RepportingController::class, 'store'])->name('repportings.store');
     Route::delete('repporting/{id}', [RepportingController::class, 'destroy'])->name('repportings.destroy');
-    Route::get('repporting/{id}', [RepportingController::class, 'show'])->name('repportings.show');
+    Route::get('repporting/{budgeting}/{id}', [RepportingController::class, 'show'])->name('repportings.show');
+    Route::get('repporting/not/{budgeting}/{id}', [RepportingController::class, 'showNot'])->name('repportings.show.not');
     Route::get('repporting/details/show/{id}', [RepportingController::class, 'showTransaction'])->name('repportings.transaction.show');
     Route::post('repporting/update/{id}', [RepportingController::class, 'update'])->name('repportings.update')->where('id', '[0-9]+');
 });

@@ -48,6 +48,7 @@ class TransactionController extends Controller
             'beneficiaries' => $beneficiaries,
             'from' => $request->from,
             'to' => $request->to,
+            'dateCurrent' => "",
         ]);
     }
 
@@ -77,9 +78,9 @@ class TransactionController extends Controller
             'budgeting_id' => $request->budgeting,
             'date' => $request->date,
         ])) {
-            return redirect()->back()->with('success', 'Elément ajouté');
+            return redirect()->back()->with(['success' => 'Elément ajouté', 'dateCurrent' => $request->date]);
         }
-        return redirect()->back()->with('fail', 'Une erreur est survenue lors de l\'enregistrement');
+        return redirect()->back()->with(['fail' => 'Une erreur est survenue lors de l\'enregistrement']);
     }
 
     /**

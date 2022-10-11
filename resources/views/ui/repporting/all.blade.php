@@ -107,7 +107,7 @@
                                                         </td>
                                                         <td style="text-align:center" class="d-flex">
                                                             <a title="Afficher" style="color: #fff"
-                                                                href="{{ route('repportings.show', ['id' => $item['id']]) }}"
+                                                                href="{{ route('repportings.show', ['id' => $item['id'], 'budgeting' => $budgeting]) }}"
                                                                 class="btn btn-info btn-sm"><i class="fas fa-eye"></i>
                                                             </a>
                                                         </td>
@@ -230,7 +230,7 @@
                                                                         </td>
                                                                         <td style="text-align: center" class="d-flex">
                                                                             <a title="Afficher" style="color: #fff"
-                                                                                href="{{ route('repportings.show', ['id' => $item['id']]) }}"
+                                                                                href="{{ route('repportings.show', ['id' => $item['id'], 'budgeting' => $budgeting]) }}"
                                                                                 class="btn btn-info btn-sm"><i
                                                                                     class="fas fa-eye"></i>
                                                                             </a>
@@ -336,7 +336,7 @@
                                                                         </td>
                                                                         <td class="d-flex">
                                                                             <a title="Afficher" style="color: #fff"
-                                                                                href="{{ route('repportings.show', ['id' => $item['id']]) }}"
+                                                                                href="{{ route('repportings.show', ['id' => $item['id'], 'budgeting' => $budgeting]) }}"
                                                                                 class="btn btn-info btn-sm"><i
                                                                                     class="fas fa-eye"></i>
                                                                             </a>
@@ -466,7 +466,7 @@
                                                                         </td>
                                                                         <td style="text-align: center" class="d-flex">
                                                                             <a title="Afficher" style="color: #fff"
-                                                                                href="{{ route('repportings.show', ['id' => $line->id]) }}"
+                                                                                href="{{ route('repportings.show.not', ['id' => $item->id, 'budgeting' => $budgeting]) }}"
                                                                                 class="btn btn-info btn-sm"><i
                                                                                     class="fas fa-eye"></i>
                                                                             </a>
@@ -527,13 +527,13 @@
                                                             @foreach ($budgeting->rubriques as $item)
                                                                 @php
                                                                     $existSend = false;
-                                                                    $line = null;
+                                                                    $line_budgeting = [];
                                                                 @endphp
                                                                 @foreach ($line_budgetings as $line)
                                                                     @if ($item->id == $line->rubrique->id)
                                                                         @php
                                                                             $existSend = true;
-                                                                            $line = $line;
+                                                                            $line_budgeting = $line;
                                                                         @endphp
                                                                     @endif
                                                                 @endforeach
@@ -560,7 +560,7 @@
                                                                             {{ $budgeting->currency->currency }}</td>
                                                                         <td class="d-flex">
                                                                             <a title="Afficher" style="color: #fff"
-                                                                                href="{{ route('repportings.show', ['id' => $line->id]) }}"
+                                                                                href="{{ route('repportings.show.not', ['id' => $item->id, 'budgeting' => $budgeting]) }}"
                                                                                 class="btn btn-info btn-sm"><i
                                                                                     class="fas fa-eye"></i>
                                                                             </a>

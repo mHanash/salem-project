@@ -92,6 +92,23 @@ class RepportingController extends Controller
             'transactions' => $transactions,
         ]);
     }
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function showNot(Request $request)
+    {
+        $rubrique = Rubrique::find($request->id);
+        $budgeting = Budgeting::find($request->budgeting);
+        $transactions = Transaction::where('budgeting_id', '=', $budgeting->id)->orderBy('date', 'ASC')->get();
+        return view('ui.repporting.showNot', [
+            'rubrique' => $rubrique,
+            'budgeting' => $budgeting,
+            'transactions' => $transactions,
+        ]);
+    }
 
     /**
      * Display the specified resource.

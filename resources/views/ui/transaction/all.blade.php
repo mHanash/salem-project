@@ -225,8 +225,8 @@
                         @csrf
                         <div class="d-flex mb-4">
                             <div class="form-outline mr-4">
-                                <input required="required" name="date" type="date" id="date"
-                                    class="form-control" />
+                                <input required="required" value="{{ session()->get('dateCurrent') }}" name="date"
+                                    type="date" id="date" class="form-control" />
                             </div>
                         </div>
                         <div class="form-outline mb-4">
@@ -284,8 +284,8 @@
                         @csrf
                         <div class="d-flex mb-4">
                             <div class="form-outline mr-4">
-                                <input required="required" name="date" type="date" id="date"
-                                    class="form-control" />
+                                <input required="required" value="{{ session()->get('dateCurrent') }}" name="date"
+                                    type="date" id="date" class="form-control" />
                             </div>
                         </div>
                         <div class="form-outline mb-4">

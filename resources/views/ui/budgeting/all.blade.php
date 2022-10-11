@@ -144,8 +144,8 @@
                                     séléctionner plusieurs</i></p>
                             <select multiple required="required" name="rubrique[]" id="rubrique" class="form-control">
                                 <option disabled value="">Categories utilisés</option>
-                                @foreach ($rubriques as $item)
-                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                @foreach ($rubriques as $rubrique)
+                                    <option value="{{ $rubrique->id }}">{{ $rubrique->name }}</option>
                                 @endforeach
                             </select>
                         </div>
