@@ -24,7 +24,7 @@
                     <div class="col-xl-3 col-sm-6 col-12 mb-4">
                         <div class="card">
                             <div class="card-body">
-                                <a class="nav-link" href="{{ route('plannings.home') }}">
+                                <a class="nav-link" href="{{ route('repportings.home') }}">
                                     <div class="d-flex justify-content-between px-md-1">
                                         <div class="align-self-center">
                                             <i class="fas fa-pencil-alt text-info fa-3x"></i>

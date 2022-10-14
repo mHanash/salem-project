@@ -20,7 +20,7 @@
                 <div class="row align-items-center" style="margin-bottom: 10px">
                     <div class="col-md-5">
                         <h4 class="page-title">
-                            ARCHIVE BUDGETS
+                            DEVICES, {{ $currency->description }} ({{ $currency->currency }})
                         </h4>
                     </div>
                     <div class="col-md-7">
@@ -31,17 +31,14 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col">
-                    @if (count($budgetings) > 0)
-                        <table class="table table-sm responsive">
+                <div class="col-md-9">
+                    @if (count($currency->changes) > 0)
+                        <table class="table table-sm">
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>
-                                    <th scope="col">Desciption</th>
-                                    <th scope="col">Année Début</th>
-                                    <th scope="col">Année Fin</th>
-                                    <th scope="col">Status</th>
-                                    <th scope="col">Dévise</th>
+                                    <th scope="col">Device change</th>
+                                    <th scope="col">Taux</th>
                                     <th scope="col">Actions</th>
                                 </tr>
                             </thead>
@@ -49,27 +46,24 @@
                                 @php
                                     $i = 0;
                                 @endphp
-                                @foreach ($budgetings as $item)
+                                @foreach ($currency->changes as $item)
                                     @php
                                         $i++;
                                     @endphp
                                     <tr>
                                         <th>{{ $i }}</th>
-                                        <td>{{ $item->description }}</td>
-                                        <td>{{ $item->startYear->year }}</td>
-                                        <td>{{ $item->endYear->year }}</td>
-                                        <td>{{ $item->status->name }}</td>
-                                        <td>{{ $item->currency->currency }}</td>
+                                        <td>{{ $item->currency }}</td>
+                                        <td>{{ $item->pivot->rate }}</td>
                                         <td class="d-flex">
                                             <a title="Afficher" style="color: #fff;margin-right: 5px"
-                                                href="{{ route('budgetings.show', ['id' => $item->id]) }}"
+                                                href="{{ route('currencies.show', ['id' => $item->id]) }}"
                                                 class="btn btn-info btn-sm"><i class="fas fa-eye"></i></a>
                                             <form
                                                 onsubmit="return confirm('Voulez-vous vraiment supprimer cet enregistrement ?')"
-                                                action="{{ route('budgetings.destroy', ['id' => $item->id]) }}"
-                                                method="POST">
+                                                action="{{ route('rates.delete', ['id' => $item->id]) }}" method="POST">
                                                 @csrf
                                                 <input type="hidden" name="id" value="{{ $item->id }}">
+                                                <input type="hidden" name="budgeting" value="{{ $budgeting->id }}">
                                                 <input type="hidden" name="_method" value="DELETE">
                                                 <button title="Supprimer" style="color: #fff"
                                                     class="btn btn-danger btn-sm "><i class="far fa-trash-alt"></i></button>
@@ -85,6 +79,34 @@
                         </div>
                     @endif
                 </div>
+                <div class="col-md-3" style="padding-top: 50px">
+                    @if ($show)
+                        <form method="POST" action="{{ route('currencies.update', ['id' => $currency->id]) }}">
+                            <!-- Name input -->
+                            @csrf
+                            <div class="form-outline mb-4">
+                                <input required="required" value="{{ $currency->description }}" name="description"
+                                    type="text" id="description" class="form-control" />
+                                <label class="form-label" for="currency">Description</label>
+                            </div>
+                            <div class="form-outline mb-4">
+                                <input required="required" value="{{ $currency->currency }}" name="currency" type="text"
+                                    id="currency" class="form-control" />
+                                <label class="form-label" for="currency">Libellé court</label>
+                            </div>
+                            <div class="modal-footer">
+                                <a type="button" class="btn btn-danger" href="{{ route('currencies') }}">Fermer</a>
+                                <button type="submit" class="btn btn-primary">Modifier</button>
+                            </div>
+                        </form>
+                    @else
+                        @if (count($currency->changes) > 0)
+                            <div class="alert alert-info">
+                                Sélectionnez un élément sur le tableau pour visualiser
+                            </div>
+                        @endif
+                    @endif
+                </div>
             </div>
         </div>
     </main>
@@ -97,58 +119,23 @@
                     <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="{{ route('budgetings.store') }}">
+                    <form method="POST" action="{{ route('rates.store', ['currency' => $currency->id]) }}">
                         <!-- Name input -->
                         @csrf
-                        <div class="form-outline mb-4">
-                            <input required="required" name="description" type="text" id="description"
-                                class="form-control" />
-                            <label class="form-label" for="description">Description</label>
-                        </div>
-                        <div class="mb-4">
-                            <select required="required" name="startYear" id="startYear" class="form-control">
-                                <option value="">Année début</option>
-                                @foreach ($years as $item)
-                                    <option value="{{ $item->id }}">{{ $item->year }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="mb-4">
-                            <select required="required" name="endYear" id="endYear" class="form-control">
-                                <option value="">Année fin</option>
-                                @foreach ($years as $item)
-                                    <option value="{{ $item->id }}">{{ $item->year }}</option>
-                                @endforeach
-                            </select>
-                        </div>
                         <div class="mb-4">
                             <select required="required" name="currency" id="currency" class="form-control">
-                                <option value="">Dévise</option>
+                                <option selected disabled value="">Choisir dévise</option>
                                 @foreach ($currencies as $item)
                                     <option value="{{ $item->id }}">{{ $item->currency }}</option>
                                 @endforeach
                             </select>
                         </div>
-                        <div class="mb-4">
-                            <select required="required" name="status" id="status" class="form-control">
-                                <option value="">Status</option>
-                                @foreach ($status as $item)
-                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                @endforeach
-                            </select>
+                        <div class="form-outline mb-4">
+                            <input required="required" name="rate" type="number" id="rate"
+                                class="form-control" />
+                            <label class="form-label" for="currency">Taux</label>
                         </div>
-                        <div class="mb-4">
-                            <p style="font-size: 10px; margin-bottom:-2px;margin-top:2px"><i>Help: Veuillez maintenir la
-                                    touche CTRL
-                                    (command) pour
-                                    séléctionner plusieurs</i></p>
-                            <select multiple required="required" name="rubrique[]" id="rubrique" class="form-control">
-                                <option disabled value="">Categories utilisés</option>
-                                @foreach ($rubriques as $rubrique)
-                                    <option value="{{ $rubrique->id }}">{{ $rubrique->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                        <input type="hidden" name="budgeting" value="{{ $budgeting->id }}">
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-mdb-dismiss="modal">Fermer</button>
                             <button type="submit" class="btn btn-primary">Enregistrer</button>

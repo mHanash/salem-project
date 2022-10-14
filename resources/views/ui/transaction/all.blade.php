@@ -73,7 +73,7 @@
             </div>
             <div class="row">
                 <div class="col-md-6 border-end">
-                    <h6 class="border-bottom border-top">Débit</h6>
+                    <h6 class="border-bottom border-top">Crédit</h6>
                     <div class="col table-responsive" style="height:70vh;overflow:scroll">
                         @if (count($transactions) > 0 && $budgeting)
                             <table id="_config" class="table table-sm table-striped">
@@ -141,7 +141,7 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <h6 class="border-bottom border-top">Crédit</h6>
+                    <h6 class="border-bottom border-top">Débit</h6>
                     <div class="col table-responsive" style="height:70vh;overflow:scroll">
                         @if (count($transactions) > 0 && $budgeting)
                             <table id="_config" class="table table-sm table-striped">
@@ -225,8 +225,8 @@
                         @csrf
                         <div class="d-flex mb-4">
                             <div class="form-outline mr-4">
-                                <input required="required" name="date" type="date" id="date"
-                                    class="form-control" />
+                                <input required="required" value="{{ session()->get('dateCurrent') }}" name="date"
+                                    type="date" id="date" class="form-control" />
                             </div>
                         </div>
                         <div class="form-outline mb-4">
@@ -284,8 +284,8 @@
                         @csrf
                         <div class="d-flex mb-4">
                             <div class="form-outline mr-4">
-                                <input required="required" name="date" type="date" id="date"
-                                    class="form-control" />
+                                <input required="required" value="{{ session()->get('dateCurrent') }}" name="date"
+                                    type="date" id="date" class="form-control" />
                             </div>
                         </div>
                         <div class="form-outline mb-4">

@@ -18,7 +18,7 @@ class BudgetingController extends Controller
      */
     public function index()
     {
-        $rubriques = Rubrique::orderBy('name', 'ASC');
+        $rubriques = Rubrique::orderBy('name', 'ASC')->get();
         $budgetings = Budgeting::all();
         $status = Status::orderBy('name', 'ASC')->get();
         $currencies = Currency::orderBy('currency', 'ASC')->get();

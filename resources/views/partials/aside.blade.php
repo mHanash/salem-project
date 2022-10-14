@@ -75,6 +75,12 @@ $finan = false;
                                         </a>
                                     </li>
                                     <li>
+                                        <a href="{{ route('rates.home') }}"
+                                            class="{{ str_contains(request()->path(), 'rate') ? 'active' : '' }} dropdown-item">
+                                            <i class="fa fa-hand-holding-usd me-3"></i></i><span>Taux de change</span>
+                                        </a>
+                                    </li>
+                                    <li>
                                         <a href="{{ route('jobs') }}"
                                             class="{{ str_contains(request()->path(), 'job') ? 'active' : '' }} dropdown-item">
                                             <i class="fas fa-network-wired me-3"></i></i><span>Postes</span>
@@ -118,8 +124,8 @@ $finan = false;
             </div>
             <div style="background-color:white; right:0px;font-size:13px;bottom: 0px; left:0px;position:absolute">
                 <p class="d-flex">
-                    Powered By <a href="https://web.facebook.com/zenasmomonzo.zenas" target="_blank"
-                        class="nav-link text-primary"> <i class="far fa-copyright"></i></i>Zén's Hanash</a>
+                    Powered By <a href="https://github.com/mHanash" target="_blank" class="nav-link text-primary"> <i
+                            class="far fa-copyright"></i></i>Zén's Hanash</a>
                 </p>
             </div>
         </nav>
