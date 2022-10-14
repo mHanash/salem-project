@@ -5,8 +5,6 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
-        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
     <style>
         table {
 
@@ -50,7 +48,7 @@
 
 <body>
 
-    <script type="text/php">
+    {{-- <script type="text/php">
         if ( isset($pdf) ) {
             $y = 570;
             $x = 400;
@@ -63,10 +61,10 @@
             $angle = 0.0;   //  default
             $pdf->page_text($x, $y, $text, $font, $size, $color, $word_space, $char_space, $angle);
         }
-    </script>
+    </script> --}}
     <div class="container-full">
         <div style="width:100%;padding: 0 10px; display:inline-block" class="">
-            <div style="height: 75px;float:left;width:40%;margin-right:30%" class="p-1 border border-dark rounded">
+            <div style="height: 75px;float:left;width:40%;margin-right:30%">
                 <span style="font-weight: bold;font-size: 13px">GRAND SEMINAIRE INTERDIOCESSAIN</span> <br /><i
                     style="font-size: 12px">SAINT CYPRIEN/KIKWIT</i><br>
                 <span style="font-size: 12px">B.P. /KKT</span>
@@ -89,7 +87,7 @@
         </div>
         <hr style="background-color: black">
 
-        <section class="mt-4" style="justify-content: center">
+        <section class="mt-4">
             <table style="width:20%; margin-bottom:10px">
                 <thead>
                     <tr>
@@ -175,23 +173,21 @@
                                     @endif
                                 </tr>
                             @endforeach
+                            <tr>
+                                <td colspan="2">TOTAL</td>
+                                <td style="text-align:right">{{ number_format($totExecDebit, 2, ',', '.') }} </td>
+                                @foreach ($toCurrencies as $item)
+                                    <td style="text-align:right">
+                                        {{ number_format($totExecDebit / $item->pivot->rate, 2, ',', '.') }}</td>
+                                @endforeach
+                                <td style="text-align:right">{{ number_format($totExecCredit, 2, ',', '.') }}</td>
+                                @foreach ($toCurrencies as $item)
+                                    <td style="text-align:right">
+                                        {{ number_format($totExecCredit / $item->pivot->rate, 2, ',', '.') }}</td>
+                                @endforeach
+                            </tr>
                         @endif
                     </tbody>
-                    <tfoot>
-                        <tr>
-                            <td colspan="2">TOTAL</td>
-                            <td style="text-align:right">{{ number_format($totExecDebit, 2, ',', '.') }} </td>
-                            @foreach ($toCurrencies as $item)
-                                <td style="text-align:right">
-                                    {{ number_format($totExecDebit / $item->pivot->rate, 2, ',', '.') }}</td>
-                            @endforeach
-                            <td style="text-align:right">{{ number_format($totExecCredit, 2, ',', '.') }}</td>
-                            @foreach ($toCurrencies as $item)
-                                <td style="text-align:right">
-                                    {{ number_format($totExecCredit / $item->pivot->rate, 2, ',', '.') }}</td>
-                            @endforeach
-                        </tr>
-                    </tfoot>
                 </table>
             </div>
         </section>
