@@ -73,7 +73,7 @@
             </div>
             <div class="row">
                 <div class="col-md-6 border-end">
-                    <h6 class="border-bottom border-top">Débit</h6>
+                    <h6 class="border-bottom border-top">Crédit</h6>
                     <div class="col table-responsive" style="height:70vh;overflow:scroll">
                         @if (count($transactions) > 0 && $budgeting)
                             <table id="_config" class="table table-sm table-striped">
@@ -141,7 +141,7 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <h6 class="border-bottom border-top">Crédit</h6>
+                    <h6 class="border-bottom border-top">Débit</h6>
                     <div class="col table-responsive" style="height:70vh;overflow:scroll">
                         @if (count($transactions) > 0 && $budgeting)
                             <table id="_config" class="table table-sm table-striped">

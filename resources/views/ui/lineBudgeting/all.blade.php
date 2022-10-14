@@ -28,6 +28,11 @@
                                     {{ $budgeting->endYear->year }}
                                 </h5>
                     </div>
+                    <div class="col-md-3">
+                        <a href="{{ route('rubriquePdf', ['id' => $budgeting->id]) }}" style="float:right"
+                            class="text-light btn btn-sm btn-secondary"><i class="fas fa-download"></i>
+                            Téléchager</a>
+                    </div>
                 </div>
                 <div class="row align-items-center" style="margin-bottom: 10px">
                     <div class="col-md-6">

@@ -31,6 +31,7 @@ use Illuminate\Support\Facades\Route;
 
 
 
+
 Route::middleware('auth')->group(function () {
 
     Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -64,6 +65,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('currency/{id}', [CurrencyController::class, 'destroy'])->name('currencies.destroy');
     Route::get('currency/{id}', [CurrencyController::class, 'show'])->name('currencies.show');
     Route::post('currency/update/{id}', [CurrencyController::class, 'update'])->name('currencies.update');
+
+    Route::get('rate', [CurrencyController::class, 'rate'])->name('rates.home');
+    Route::get('rate/details/{id}', [CurrencyController::class, 'rateIndex'])->name('rates');
+    Route::post('rate/{currency}', [CurrencyController::class, 'rateStore'])->name('rates.store');
+    Route::delete('rate/delete/{id}', [CurrencyController::class, 'rateDestroy'])->name('rates.delete');
 
     Route::get('role', [RoleController::class, 'index'])->name('roles');
     Route::post('role', [RoleController::class, 'store'])->name('roles.store');
@@ -126,6 +132,11 @@ Route::middleware('auth')->group(function () {
     Route::get('repporting/not/{budgeting}/{id}', [RepportingController::class, 'showNot'])->name('repportings.show.not');
     Route::get('repporting/details/show/{id}', [RepportingController::class, 'showTransaction'])->name('repportings.transaction.show');
     Route::post('repporting/update/{id}', [RepportingController::class, 'update'])->name('repportings.update')->where('id', '[0-9]+');
+
+    Route::get('download-pdf/{id}', [RepportingController::class, 'getRubriquePdf'])->name('rubriquePdf');
+    Route::get('download-execution-pdf/{id}/from/to', [RepportingController::class, 'getExecutionPdf'])->name('executionPdf')->where('id', '[0-9]+');
+    Route::get('download-execution-not-pdf/{id}/from/to', [RepportingController::class, 'getExecutionNotPdf'])->name('executionNotPdf')->where('id', '[0-9]+');
+    Route::get('download-transaction-pdf/{id}/from/to', [RepportingController::class, 'getTransactionPdf'])->name('transactionPdf')->where('id', '[0-9]+');
 });
 
 require __DIR__ . '/auth.php';

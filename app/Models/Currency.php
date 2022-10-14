@@ -20,4 +20,13 @@ class Currency extends Model
     {
         return $this->hasMany(Budgeting::class);
     }
+
+    public function changes()
+    {
+        return $this->belongsToMany(Currency::class, 'currency_change', 'currency_id', 'change_id')->withPivot("rate");
+    }
+    public function currencies()
+    {
+        return $this->belongsToMany(Currency::class, 'currency_change', 'change_id', 'currency_id')->withPivot("rate");
+    }
 }
