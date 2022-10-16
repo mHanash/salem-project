@@ -319,8 +319,64 @@
                                     </option>
                                 @endforeach
                             </select>
+                            <button data-mdb-toggle="modal" data-mdb-target="#addBeneficiary" style="margin-top:5px"
+                                type="button" class=" btn-sm btn btn-secondary"><i class="fas fa-plus"></i>
+                                Ajouter agent</button>
                         </div>
                         <input type="hidden" value="{{ $budgeting->id }}" name="budgeting">
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-mdb-dismiss="modal">Fermer</button>
+                            <button type="submit" class="btn btn-primary">Enregistrer</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="addBeneficiary" tabindex="-1" aria-labelledby="addModalBeneficiary"
+        aria-hidden="true">
+        <div style="width: 30%" class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addModalBeneficiary">Ajouter un agent</h5>
+                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="{{ route('beneficiaries.store') }}">
+                        <!-- Name input -->
+                        @csrf
+                        <div class="form-outline mb-4">
+                            <input required="required" name="name" type="text" id="name"
+                                class="form-control" />
+                            <label class="form-label" for="name">Nom</label>
+                        </div>
+                        <div class="form-outline mb-4">
+                            <input required="required" name="lastname" type="text" id="lastname"
+                                class="form-control" />
+                            <label class="form-label" for="lastname">Postnom</label>
+                        </div>
+                        <div class="form-outline mb-4">
+                            <input required="required" name="firstname" type="text" id="firstname"
+                                class="form-control" />
+                            <label class="form-label" for="firstname">Prenom</label>
+                        </div>
+                        <div class="mb-4">
+                            <select required="required" name="job" id="job" class="form-control">
+                                <option value="">Poste</option>
+                                @foreach ($jobs as $item)
+                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-4">
+                            <select required="required" name="typeBeneficiary" id="typeBeneficiary"
+                                class="form-control">
+                                <option value="">Type Agent</option>
+                                @foreach ($typeBeneficiaries as $item)
+                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-mdb-dismiss="modal">Fermer</button>
                             <button type="submit" class="btn btn-primary">Enregistrer</button>

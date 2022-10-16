@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Beneficiary;
 use App\Models\Budgeting;
+use App\Models\Job;
 use App\Models\Rubrique;
 use App\Models\Status;
 use App\Models\Transaction;
+use App\Models\TypeBeneficiary;
 use App\Models\TypeRubrique;
 use Illuminate\Http\Request;
 
@@ -27,6 +29,8 @@ class TransactionController extends Controller
     }
     public function index(Request $request)
     {
+        $typeBeneficiaries = TypeBeneficiary::orderBy('name', 'ASC')->get();
+        $jobs = Job::orderBy('name', 'ASC')->get();
         $budgeting = Budgeting::find($request->id);
         $rubriques = $budgeting->rubriques()->orderBy('name', 'ASC')->get();
         $beneficiaries = Beneficiary::orderBy('name', 'ASC')->get();;
@@ -49,6 +53,8 @@ class TransactionController extends Controller
             'from' => ($request->from) ? $request->from : date('Y-m-d'),
             'to' => $request->to,
             'dateCurrent' => "",
+            'typeBeneficiaries' => $typeBeneficiaries,
+            'jobs' => $jobs,
         ]);
     }
 

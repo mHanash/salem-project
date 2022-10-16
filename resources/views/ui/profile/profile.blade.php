@@ -57,6 +57,9 @@
                         <li class="list-group-item">
                             <span class="text-primary">Poste : </span>{{ $user->beneficiary->job->name }}
                         </li>
+                        <li class="list-group-item">
+                            <span class="text-primary">Email : </span>{{ $user->email }}
+                        </li>
                     </ul>
                 </div>
             </div>
