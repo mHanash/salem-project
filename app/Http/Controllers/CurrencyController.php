@@ -6,6 +6,7 @@ use App\Models\Budgeting;
 use App\Models\Currency;
 use App\Models\Status;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CurrencyController extends Controller
 {
@@ -129,7 +130,7 @@ class CurrencyController extends Controller
         $currencies = [];
         $datas = Currency::where('id', '<>', $budgeting->currency->id)->orderBy('currency', 'ASC')->get();
         foreach ($datas as $value) {
-            if (count($value->currencies) > 0) {
+            if (count($value->currencies()->where('budgeting_id', '=', $budgeting->id)->get()) > 0) {
                 $test = false;
                 foreach ($value->currencies as $item) {
                     if ($item->id != $currency->id) {
@@ -158,13 +159,13 @@ class CurrencyController extends Controller
     {
         $other = Currency::find($request->id);
         $budgeting = Budgeting::find($request->budgeting);
-        $currencyCurr = $budgeting->currency;
+        $currencyCurr =  Currency::find($budgeting->currency->id);
+        $record = $other->currencies()->where(['currency_id' => $currencyCurr->id, 'budgeting_id' => $budgeting->id, 'change_id' => $other->id])->first()->pivot;
+        $result = DB::delete('delete from currency_change where id = ?', [$record->id]);
 
-        foreach ($other->currencies()->get() as $item) {
-            if ($currencyCurr->id == $item->id) {
-                $other->currencies(['currency_id' => $currencyCurr->id, 'budgeting_id' => $budgeting->id])->detach();
-            }
-        }
-        return redirect()->back()->with('success', 'Suppression effectuée');
+        if ($result > 0) {
+            return redirect()->back()->with('success', 'Suppression effectuée');
+        };
+        return redirect()->back()->with('fail', 'Une erreur s\'est produite lors de la suppression');
     }
 }

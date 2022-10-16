@@ -39,14 +39,14 @@ class TransactionController extends Controller
                 $transactions = Transaction::where('budgeting_id', '=', $request->id)->whereBetween('date', [$request->from, $request->to])->get();
             }
         } else {
-            $transactions = Transaction::where('budgeting_id', '=', $request->id)->get();
+            $transactions = Transaction::where('budgeting_id', '=', $request->id)->where('date', '>=', date('Y-m-d'))->get();
         }
         return view('ui.transaction.all', [
             'transactions' => $transactions,
             'budgeting' => $budgeting,
             'rubriques' => $rubriques,
             'beneficiaries' => $beneficiaries,
-            'from' => $request->from,
+            'from' => ($request->from) ? $request->from : date('Y-m-d'),
             'to' => $request->to,
             'dateCurrent' => "",
         ]);

@@ -23,12 +23,20 @@
             border: 1px solid black;
         }
 
+        table tfoot tr td {
+            border: 1px solid black;
+        }
+
         table tbody,
         table thead {
             border: 1px solid black;
         }
 
         table thead tr {
+            border: 1px solid black;
+        }
+
+        table tfoot tr {
             border: 1px solid black;
         }
 
@@ -44,7 +52,7 @@
 
 <body>
 
-    <script type="text/php">
+    {{-- <script type="text/php">
         if ( isset($pdf) ) {
             $x = 310;
             $y = 793;
@@ -57,7 +65,7 @@
             $angle = 0.0;   //  default
             $pdf->page_text($x, $y, $text, $font, $size, $color, $word_space, $char_space, $angle);
         }
-    </script>
+    </script> --}}
     <div class="container-full">
         <div style="width:100%;padding: 0 10px; display:inline-block" class="">
             <div style="height: 75px;float:left;width:40%;margin-right:30%" class="p-1 border border-dark rounded">
@@ -117,6 +125,8 @@
                     @if ($datas)
                         @php
                             $i = 0;
+                            $totDeb = 0;
+                            $totCre = 0;
                         @endphp
                         @foreach ($datas as $item)
                             @php
@@ -126,33 +136,63 @@
                                 <td scope="row">{{ $i }}</td>
                                 <td>{{ $item['name'] }}</td>
                                 @if ($item['state'] == 1)
-                                    <td class="numberFormat" style="text-align:right">-</td>
+                                    @php
+                                        $totCre += $item['amount'];
+                                    @endphp
+                                    <td style="text-align:right">-</td>
                                     @foreach ($toCurrencies as $val)
-                                        <td class="numberFormat" style="text-align:right">-</td>
+                                        <td style="text-align:right">-</td>
                                     @endforeach
-                                    <td class="numberFormat" style="text-align:right">
+                                    <td style="text-align:right">
                                         {{ number_format($item['amount'], 2, ',', '.') }}</td>
                                     @foreach ($toCurrencies as $val)
-                                        <td class="numberFormat" style="text-align:right">
+                                        <td style="text-align:right">
                                             {{ number_format($item['amount'] / $val->pivot->rate, 2, ',', '.') }}</td>
                                     @endforeach
                                 @else
-                                    <td class="numberFormat" style="text-align:right">
+                                    @php
+                                        $totDeb += $item['amount'];
+                                    @endphp
+                                    <td style="text-align:right">
                                         {{ number_format($item['amount'], 2, ',', '.') }}</td>
                                     @foreach ($toCurrencies as $val)
-                                        <td class="numberFormat" style="text-align:right">
+                                        <td style="text-align:right">
                                             {{ number_format($item['amount'] / $val->pivot->rate, 2, ',', '.') }}</td>
                                     @endforeach
-                                    <td class="numberFormat" style="text-align:right">-</td>
+                                    <td style="text-align:right">-</td>
                                     @foreach ($toCurrencies as $val)
-                                        <td class="numberFormat" style="text-align:right">-</td>
+                                        <td style="text-align:right">-</td>
                                     @endforeach
                                 @endif
                             </tr>
                         @endforeach
                     @endif
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="2">TOTAL</td>
+                        <td style="text-align:right">{{ number_format($totDeb, 2, ',', '.') }}</td>
+                        @foreach ($toCurrencies as $item)
+                            <td style="text-align:right">{{ number_format($totDeb / $val->pivot->rate, 2, ',', '.') }}
+                            </td>
+                        @endforeach
+                        <td style="text-align:right">{{ number_format($totCre, 2, ',', '.') }}</td>
+                        @foreach ($toCurrencies as $item)
+                            <td style="text-align:right">{{ number_format($totDeb / $val->pivot->rate, 2, ',', '.') }}
+                            </td>
+                        @endforeach
+                    </tr>
+                </tfoot>
             </table>
+            <h3 style="color: red">Balance</h3>
+            <ul>
+                <li>{{ number_format($totCre - $totDeb, 2, ',', '.') }}
+                    {{ $budgeting->currency->currency }}</li>
+                @foreach ($toCurrencies as $item)
+                    <li>{{ number_format(($totCre - $totDeb) / $item->pivot->rate, 2, ',', '.') }}
+                        {{ $item->currency }}</li>
+                @endforeach
+            </ul>
         </section>
         <footer style="width:100%;position: absolute;bottom: 0px">
             <div style="width:100%;font-size: 11px; display:inline-block">
@@ -165,52 +205,6 @@
         integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous">
-    </script>
-    <script>
-        (function($) {
-            /* ===============
-            // $(Elem).formatNumber({opts});
-            // =============== */
-            $.fn.extend({
-                formatNumber: function(options) {
-                    var defaults = {
-                        cents: '.',
-                        decimal: ','
-                    }
-
-                    var o = $.extend(defaults, options);
-
-                    return this.each(function() {
-                        /* ----Script Start---- */
-                        var thiz = $(this),
-                            values, x, x1, x2;
-                        //try{
-                        values = $.trim(thiz.html());
-                        //console.log(values);
-                        values += '';
-                        x = values.split(o.cents);
-                        //console.log(x);
-                        x1 = x[0];
-                        //console.log(x1);
-                        x2 = x.length > 1 ? o.cents + x[1] : '';
-                        //console.log(x2);
-                        var rgx = /(\d+)(\d{3})/;
-                        while (rgx.test(x1)) {
-                            x1 = x1.replace(rgx, '$1' + o.decimal + '$2');
-                        }
-                        thiz.html(x1 + x2);
-                        //}catch(e){
-                        //	thiz.html('Value ('+values+') not formatable.');
-                        //}
-
-                        /* ----Script End---- */
-                    }); //return each
-                } //fn.extend
-            });
-        })(jQuery);
-        $('.numberFormat').formatNumber({
-            cents: '.',
-        });
     </script>
 </body>
 

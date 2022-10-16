@@ -17,6 +17,8 @@
                 </div>
             @endif
             <div class="page-breadcrumb">
+                <a href={{ route('rates.home') }} style="width:90px;padding:1px; margin-left:2px"
+                    class="btn btn-secondary btn-sm"> Retour </a>
                 <div class="row align-items-center" style="margin-bottom: 10px">
                     <div class="col-md-5">
                         <h4 class="page-title">
@@ -32,7 +34,8 @@
             </div>
             <div class="row">
                 <div class="col-md-9">
-                    @if (count($currency->changes) > 0)
+                    @if (count(
+                        $currency->changes()->where('budgeting_id', '=', $budgeting->id)->get()) > 0)
                         <table class="table table-sm">
                             <thead>
                                 <tr>
@@ -46,7 +49,7 @@
                                 @php
                                     $i = 0;
                                 @endphp
-                                @foreach ($currency->changes as $item)
+                                @foreach ($currency->changes()->where('budgeting_id', '=', $budgeting->id)->get() as $item)
                                     @php
                                         $i++;
                                     @endphp
@@ -100,7 +103,8 @@
                             </div>
                         </form>
                     @else
-                        @if (count($currency->changes) > 0)
+                        @if (count(
+                            $currency->changes()->where('budgeting_id', '=', $budgeting->id)->get()) > 0)
                             <div class="alert alert-info">
                                 Sélectionnez un élément sur le tableau pour visualiser
                             </div>

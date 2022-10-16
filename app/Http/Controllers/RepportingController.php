@@ -45,13 +45,13 @@ class RepportingController extends Controller
                 $transactions = Transaction::where('budgeting_id', '=', $request->id)->whereBetween('date', [$request->from, $request->to])->get();
             }
         } else {
-            $transactions = Transaction::where('budgeting_id', '=', $request->id)->get();
+            $transactions = Transaction::where('budgeting_id', '=', $request->id)->where('date', '>=', date('Y-m-d'))->get();
         }
         return view('ui.repporting.all', [
             'transactions' => $transactions,
             'line_budgetings' => $line_budgetings,
             'budgeting' => $budgeting,
-            'from' => $request->from,
+            'from' => ($request->from) ? $request->from : date('Y-m-d'),
             'to' => $request->to,
         ]);
     }
