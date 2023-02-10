@@ -22,7 +22,7 @@
                             <label class="form-label" for="name">Nom</label>
                         </div>
                         <div class="form-outline mb-4">
-                            <input value="{{ $beneficiary->lastname }}" required="required" name="lastname" type="text"
+                            <input value="{{ $beneficiary->lastname }}" name="lastname" type="text"
                                 id="lastname" class="form-control" />
                             <label class="form-label" for="lastname">Postnom</label>
                         </div>

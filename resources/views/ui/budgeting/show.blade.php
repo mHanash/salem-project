@@ -115,8 +115,13 @@
                             </select>
                         </div>
                         <div class="d-flex">
-                            <button type="submit" style="margin-right: 7px" class="btn btn-primary">Modifier</button>
-                            <a class="btn btn-info" href="{{ route('budgetings') }}">Retour</a>
+                            <button type="submit" style="margin-right: 7px"
+                                class="btn btn-sm  btn-primary">Modifier</button>
+                            <a class="btn btn-sm btn-info" style="margin-right: 7px"
+                                href="{{ route('budgetings') }}">Retour</a>
+                            <a class="btn btn-sm  btn-warning"
+                                href="{{ route('budgetings.export', ['id' => $budgeting->id]) }}">Exporter
+                                les données</a>
                         </div>
                     </form>
                 </div>

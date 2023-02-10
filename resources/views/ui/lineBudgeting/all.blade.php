@@ -201,7 +201,7 @@
                         </div>
                         <div class="d-flex mb-4">
                             <div class="form-outline mr-4">
-                                <input required="required" name="amount" type="number" id="amount"
+                                <input required="required" step=0.01 name="amount" type="number" id="amount"
                                     class="form-control" />
                                 <label class="form-label" for="amount">Montant</label>
                             </div>
@@ -254,7 +254,7 @@
                         </div>
                         <div class="d-flex mb-4">
                             <div class="form-outline mr-4">
-                                <input required="required" name="amount" type="number" id="amount"
+                                <input required="required" step=0.01 name="amount" type="number" id="amount"
                                     class="form-control" />
                                 <label class="form-label" for="amount">Montant</label>
                             </div>

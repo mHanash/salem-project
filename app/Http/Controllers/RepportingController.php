@@ -9,7 +9,7 @@ use App\Models\Status;
 use App\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Barryvdh\DomPDF\Facade\PDF;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
 
 class RepportingController extends Controller
@@ -38,20 +38,20 @@ class RepportingController extends Controller
         $line_budgetings = LineBudgeting::where('budgeting_id', '=', $request->id)->get();
         if ($request->from || $request->to) {
             if ($request->from && !$request->to) {
-                $transactions = Transaction::where('budgeting_id', '=', $request->id)->where('date', '>=', $request->from)->get();
+                $transactions = Transaction::where('budgeting_id', '=', $request->id)->where('date', '>=', $request->from)->orderBy('date','ASC')->get();
             } else if (!$request->from && $request->to) {
-                $transactions = Transaction::where('budgeting_id', '=', $request->id)->where('date', '<=', $request->to)->get();
+                $transactions = Transaction::where('budgeting_id', '=', $request->id)->where('date', '<=', $request->to)->orderBy('date','ASC')->get();
             } else {
-                $transactions = Transaction::where('budgeting_id', '=', $request->id)->whereBetween('date', [$request->from, $request->to])->get();
+                $transactions = Transaction::where('budgeting_id', '=', $request->id)->whereBetween('date', [$request->from, $request->to])->orderBy('date','ASC')->get();
             }
         } else {
-            $transactions = Transaction::where('budgeting_id', '=', $request->id)->get();
+            $transactions = Transaction::where('budgeting_id', '=', $request->id)->where('date','>=',date('Y-m-d'))->orderBy('date','ASC')->get();
         }
         return view('ui.repporting.all', [
             'transactions' => $transactions,
             'line_budgetings' => $line_budgetings,
             'budgeting' => $budgeting,
-            'from' => $request->from,
+            'from' => ($request->from)?$request->from:date('Y-m-d'),
             'to' => $request->to,
         ]);
     }
@@ -163,7 +163,7 @@ class RepportingController extends Controller
                 'amount' => $value->amount,
             ]);
         }
-        $pdf = PDF::loadView('generatePDF.rubriqueToPdf', [
+        $pdf = Pdf::loadView('generatePDF.rubriqueToPdf', [
             'datas' => $datas,
             'user' => Auth::user(),
             'budgeting' => $budgeting,
@@ -179,14 +179,14 @@ class RepportingController extends Controller
         $budgeting = Budgeting::find($request->id);
         if ($request->from || $request->to) {
             if ($request->from && !$request->to) {
-                $transactions = Transaction::where('budgeting_id', '=', $request->id)->where('date', '>=', $request->from)->get();
+                $transactions = Transaction::where('budgeting_id', '=', $request->id)->where('date', '>=', $request->from)->orderBy('date')->get();
             } else if (!$request->from && $request->to) {
-                $transactions = Transaction::where('budgeting_id', '=', $request->id)->where('date', '<=', $request->to)->get();
+                $transactions = Transaction::where('budgeting_id', '=', $request->id)->where('date', '<=', $request->to)->orderBy('date')->get();
             } else {
-                $transactions = Transaction::where('budgeting_id', '=', $request->id)->whereBetween('date', [$request->from, $request->to])->get();
+                $transactions = Transaction::where('budgeting_id', '=', $request->id)->whereBetween('date', [$request->from, $request->to])->orderBy('date')->get();
             }
         } else {
-            $transactions = Transaction::where('budgeting_id', '=', $request->id)->get();
+            $transactions = Transaction::where('budgeting_id', '=', $request->id)->orderBy('date')->get();
         }
         $currency = $budgeting->currency;
         $datas = [];

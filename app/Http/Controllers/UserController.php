@@ -84,7 +84,7 @@ class UserController extends Controller
             'status_id' => $request->status,
         ])) {
             $user->roles()->attach($request->roles);
-            return redirect()->back()->with('success', 'Compte créé');
+            return redirect()->back()->with('success', 'Compte créé avec un le mot de passe par défaut : saSalemFin');
         }
         return redirect()->back()->with('fail', 'Une erreur est survenue lors de l\'enregistrement');
     }
@@ -184,7 +184,7 @@ class UserController extends Controller
         if ($user->update([
             'password' => Hash::make('saSalemFin'),
         ])) { {
-                return redirect()->back()->with('success', 'Mot de passe réinitialiser');
+                return redirect()->back()->with('success', 'Mot de passe réinitialiser par "saSalemFin"');
             }
             return redirect()->back()->with('fail', 'Une erreur est survenue lors de la réinitialisation');
         }

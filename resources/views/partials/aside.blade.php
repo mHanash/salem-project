@@ -1,6 +1,7 @@
 @php
-$admin = false;
-$finan = false;
+    $admin = false;
+    $finan = false;
+    $eco = false;
 @endphp
 @foreach (Auth::user()->roles as $role)
     @if ($role->name == 'ADMIN')
@@ -13,6 +14,11 @@ $finan = false;
             $finan = true;
         @endphp
     @endif
+    @if ($role->name == 'ECONOMAT')
+        @php
+            $eco = true;
+        @endphp
+    @endif
 @endforeach
 <aside class="left-sidebar" data-sidebarbg="skin5">
     <!-- Sidebar scroll-->
@@ -23,21 +29,25 @@ $finan = false;
                     <a href="{{ route('home') }}"
                         class="{{ '/' == request()->path() ? 'active' : '' }} list-group-item list-group-item-action py-2 ripple"
                         aria-current="true">
-                        <i class="fas fa-tachometer-alt fa-fw me-3"></i><span>Tableau de bord</span>
+                        <i class="fas fa-tachometer-alt fa-fw me-3"></i><span>Accueil</span>
                     </a>
-                    <a href="{{ route('repportings.home') }}"
-                        class="{{ str_contains(request()->path(), 'repporting') ? 'active' : '' }} list-group-item list-group-item-action py-2 ripple">
-                        <i class="fas fa-chart-area fa-fw me-3"></i><span>Rapport</span>
-                    </a>
-                    <a href="{{ route('transactions.home') }}"
-                        class="{{ str_contains(request()->path(), 'transaction') ? 'active' : '' }}  list-group-item list-group-item-action py-2 ripple">
-                        <i class="fas fa-book-open me-3"></i></i><span>Journal</span>
-                    </a>
-                    @if ($admin)
+                    @if ($eco || $finan)
+                        <a href="{{ route('repportings.home') }}"
+                            class="{{ str_contains(request()->path(), 'repporting') ? 'active' : '' }} list-group-item list-group-item-action py-2 ripple">
+                            <i class="fas fa-chart-area fa-fw me-3"></i><span>Rapport</span>
+                        </a>
+                        <a href="{{ route('transactions.home') }}"
+                            class="{{ str_contains(request()->path(), 'transaction') ? 'active' : '' }}  list-group-item list-group-item-action py-2 ripple">
+                            <i class="fas fa-book-open me-3"></i></i><span>Journal</span>
+                        </a>
+                    @endif
+                    @if ($eco)
                         <a href="{{ route('plannings.home') }}"
                             class="{{ str_contains(request()->path(), 'planning') ? 'active' : '' }} list-group-item list-group-item-action py-2 ripple">
                             <i class="fas fa-calendar-alt me-3"></i></i><span>Prévision</span>
                         </a>
+                    @endif
+                    @if ($eco || $admin)
                         <a href="{{ route('accounts') }}"
                             class="{{ str_contains(request()->path(), 'accounts') ? 'active' : '' }} list-group-item list-group-item-action py-2 ripple">
                             <i class="fas fa-calculator me-3"></i></i><span>Compte</span>
@@ -122,12 +132,12 @@ $finan = false;
                     @endif
                 </div>
             </div>
-            <div style="background-color:white; right:0px;font-size:13px;bottom: 0px; left:0px;position:absolute">
+            {{-- <div style="background-color:white; right:0px;font-size:13px;bottom: 0px; left:0px;position:absolute">
                 <p class="d-flex">
                     Powered By <a href="https://github.com/mHanash" target="_blank" class="nav-link text-primary"> <i
                             class="far fa-copyright"></i></i>Zén's Hanash</a>
                 </p>
-            </div>
+            </div> --}}
         </nav>
     </div>
     <!-- End Sidebar scroll-->

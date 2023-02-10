@@ -121,6 +121,8 @@
                     @if ($datas)
                         @php
                             $i = 0;
+                            $totDebit = 0;
+                            $totCredit = 0;
                         @endphp
                         @foreach ($datas as $item)
                             @php
@@ -131,6 +133,9 @@
                                 <td>{{ $item['date'] }}</td>
                                 <td>{{ $item['name'] }}</td>
                                 @if ($item['state'] == 1)
+                                    @php
+                                        $totCredit += $item['amount'];
+                                    @endphp
                                     <td class="numberFormat" style="text-align:right">-</td>
                                     @foreach ($toCurrencies as $val)
                                         <td class="numberFormat" style="text-align:right">-</td>
@@ -142,6 +147,9 @@
                                             {{ number_format($item['amount'] / $val->pivot->rate, 2, ',', '.') }}</td>
                                     @endforeach
                                 @else
+                                    @php
+                                        $totDebit += $item['amount'];
+                                    @endphp
                                     <td class="numberFormat" style="text-align:right">
                                         {{ number_format($item['amount'], 2, ',', '.') }}</td>
                                     @foreach ($toCurrencies as $val)
@@ -155,9 +163,31 @@
                                 @endif
                             </tr>
                         @endforeach
+                        <tr>
+                            <td colspan="3">TOTAL</td>
+                            <td style="text-align:right">{{ number_format($totDebit, 2, ',', '.') }}</td>
+                            @foreach ($toCurrencies as $val)
+                                <td style="text-align:right" class="numberFormat" style="text-align:right">
+                                    {{ number_format($totDebit / $val->pivot->rate, 2, ',', '.') }}</td>
+                            @endforeach
+                            <td style="text-align:right">{{ number_format($totCredit, 2, ',', '.') }}</td>
+                            @foreach ($toCurrencies as $val)
+                                <td style="text-align:right" class="numberFormat" style="text-align:right">
+                                    {{ number_format($totCredit / $val->pivot->rate, 2, ',', '.') }}</td>
+                            @endforeach
+                        </tr>
                     @endif
                 </tbody>
             </table>
+            <h3 style="color: red">Reserve en caisse</h3>
+            <ul>
+                <li>{{ number_format($totCredit - $totDebit, 2, ',', '.') }} {{ $budgeting->currency->currency }}</li>
+                @foreach ($toCurrencies as $item)
+                <li>{{ number_format(($totCredit - $totDebit) / $item->pivot->rate, 2, ',', '.') }}
+                        {{ $item->currency }}</li>
+                @endforeach
+            </ul>
+        </section>
         </section>
         <footer style="width:100%;position: absolute;bottom: 0px">
             <div style="width:100%;font-size: 11px; display:inline-block">

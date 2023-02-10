@@ -105,7 +105,7 @@
                             <label class="form-label" for="name">Nom</label>
                         </div>
                         <div class="form-outline mb-4">
-                            <input required="required" name="lastname" type="text" id="lastname" class="form-control" />
+                            <input name="lastname" type="text" id="lastname" class="form-control" />
                             <label class="form-label" for="lastname">Postnom</label>
                         </div>
                         <div class="form-outline mb-4">

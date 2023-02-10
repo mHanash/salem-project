@@ -4,6 +4,7 @@
     @php
         $admin = false;
         $finan = false;
+        $eco = false;
     @endphp
     @foreach (Auth::user()->roles as $role)
         @if ($role->name == 'ADMIN')
@@ -14,6 +15,11 @@
         @if ($role->name == 'FINANCIAL')
             @php
                 $finan = true;
+            @endphp
+        @endif
+        @if ($role->name == 'ECONOMAT')
+            @php
+                $eco = true;
             @endphp
         @endif
     @endforeach
@@ -105,7 +111,7 @@
                                                     <a title="Afficher" style="color: #fff;margin-right: 5px"
                                                         href="{{ route('transactions.show', ['id' => $item->id]) }}"
                                                         class="btn btn-info btn-sm"><i class="fas fa-eye"></i></a>
-                                                    @if ($admin)
+                                                    @if ($eco)
                                                         <form
                                                             onsubmit="return confirm('Voulez-vous vraiment supprimer cet enregistrement ?')"
                                                             action="{{ route('transactions.destroy', ['id' => $item->id]) }}"
@@ -173,7 +179,7 @@
                                                     <a title="Afficher" style="color: #fff;margin-right: 5px"
                                                         href="{{ route('transactions.show', ['id' => $item->id]) }}"
                                                         class="btn btn-info btn-sm"><i class="fas fa-eye"></i></a>
-                                                    @if ($admin)
+                                                    @if ($eco)
                                                         <form
                                                             onsubmit="return confirm('Voulez-vous vraiment supprimer cet enregistrement ?')"
                                                             action="{{ route('transactions.destroy', ['id' => $item->id]) }}"
@@ -235,7 +241,7 @@
                         </div>
                         <div class="d-flex mb-4">
                             <div class="form-outline mr-4">
-                                <input required="required" name="amount" type="number" id="amount"
+                                <input required="required" step=0.01 name="amount" type="number" id="amount"
                                     class="form-control" />
                                 <label class="form-label" for="amount">Montant</label>
                             </div>
@@ -294,9 +300,9 @@
                         </div>
                         <div class="d-flex mb-4">
                             <div class="form-outline mr-4">
-                                <input required="required" name="amount" type="number" id="amount"
+                                <input required="required" step=0.01 name="amount" type="number" id="amount"
                                     class="form-control" />
-                                <label class="form-label" for="amount">Montant</label>
+                                <label class="form-label"for="amount">Montant</label>
                             </div>
                             <div class="text-danger"> - {{ $budgeting->currency->currency }}</div>
                         </div>
@@ -319,8 +325,63 @@
                                     </option>
                                 @endforeach
                             </select>
+                            <button data-mdb-toggle="modal" data-mdb-target="#addBeneficiary" style="margin-top:5px"
+                                type="button" class=" btn-sm btn btn-secondary"><i class="fas fa-plus"></i>
+                                Ajouter agent</button>
                         </div>
                         <input type="hidden" value="{{ $budgeting->id }}" name="budgeting">
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-mdb-dismiss="modal">Fermer</button>
+                            <button type="submit" class="btn btn-primary">Enregistrer</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="addBeneficiary" tabindex="-1" aria-labelledby="addModalBeneficiary"
+        aria-hidden="true">
+        <div style="width: 30%" class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addModalBeneficiary">Ajouter un agent</h5>
+                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="{{ route('beneficiaries.store') }}">
+                        <!-- Name input -->
+                        @csrf
+                        <div class="form-outline mb-4">
+                            <input required="required" name="name" type="text" id="name"
+                                class="form-control" />
+                            <label class="form-label" for="name">Nom</label>
+                        </div>
+                        <div class="form-outline mb-4">
+                            <input name="lastname" type="text" id="lastname" class="form-control" />
+                            <label class="form-label" for="lastname">Postnom</label>
+                        </div>
+                        <div class="form-outline mb-4">
+                            <input required="required" name="firstname" type="text" id="firstname"
+                                class="form-control" />
+                            <label class="form-label" for="firstname">Prenom</label>
+                        </div>
+                        <div class="mb-4">
+                            <select required="required" name="job" id="job" class="form-control">
+                                <option value="">Poste</option>
+                                @foreach ($jobs as $item)
+                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-4">
+                            <select required="required" name="typeBeneficiary" id="typeBeneficiary"
+                                class="form-control">
+                                <option value="">Type Agent</option>
+                                @foreach ($typeBeneficiaries as $item)
+                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-mdb-dismiss="modal">Fermer</button>
                             <button type="submit" class="btn btn-primary">Enregistrer</button>

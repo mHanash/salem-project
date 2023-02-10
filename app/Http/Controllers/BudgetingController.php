@@ -6,8 +6,11 @@ use App\Models\Budgeting;
 use App\Models\Currency;
 use App\Models\Rubrique;
 use App\Models\Status;
+use App\Models\Transaction;
 use App\Models\Year;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BudgetingController extends Controller
 {
@@ -139,5 +142,37 @@ class BudgetingController extends Controller
             }
             return redirect()->route('budgetings')->with('fail', 'Une erreur est survenue lors de la suppression');
         }
+    }
+    
+    public function viewAll(Request $request)
+    {
+        $budgeting = Budgeting::find($request->id);
+        $line_budgetings = $budgeting->rubriques()->orderBy('code', 'ASC')->get();
+        $transactions = Transaction::where('budgeting_id', '=', $request->id)->get();
+        $currency = $budgeting->currency;
+        $datas = [];
+        $toCurrencies = $currency->changes()->where('budgeting_id', "=", $budgeting->id)->orderBy('currency')->get();
+        foreach ($line_budgetings as $line) {
+            $amountExec = 0;
+            foreach ($transactions as $value) {
+                if ($line->id == $value->rubrique->id) {
+                    $amountExec += $value->amount;
+                }
+            }
+            array_push($datas, [
+                'name' => $line->name,
+                'state' => $line->typeRubrique->state,
+                'amountExec' => $amountExec,
+            ]);
+        }
+        $pdf = Pdf::loadView('generatePDF/executionAllToPdf', [
+            'datas' => $datas,
+            'user' => Auth::user(),
+            'budgeting' => $budgeting,
+            'toCurrencies' => $toCurrencies,
+
+        ])->setPaper('a4', 'landscape')->set_option("isPhpEnabled", true);
+        // return $pdf->stream();
+        return $pdf->download(date('U-Y-m-d') . "-" . \Str::slug('Rapport Budget -').$budgeting->startYear->year."-".$budgeting->endYear->year . ".pdf");
     }
 }

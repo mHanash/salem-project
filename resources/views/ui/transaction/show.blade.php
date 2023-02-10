@@ -52,7 +52,7 @@
                         </div>
                         <div class="d-flex mb-4">
                             <div class="form-outline mr-4">
-                                <input required="required" name="amount" value="{{ $transaction->amount }}" type="number"
+                                <input required="required" step=0.01 name="amount" value="{{ $transaction->amount }}" type="number"
                                     id="amount" class="form-control" />
                                 <label class="form-label" for="amount">Montant</label>
                             </div>

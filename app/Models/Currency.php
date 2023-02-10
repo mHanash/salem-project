@@ -23,10 +23,10 @@ class Currency extends Model
 
     public function changes()
     {
-        return $this->belongsToMany(Currency::class, 'currency_change', 'currency_id', 'change_id')->withPivot("rate");
+        return $this->belongsToMany(Currency::class, 'currency_change', 'currency_id', 'change_id')->withPivot(['rate', 'budgeting_id', 'id']);
     }
     public function currencies()
     {
-        return $this->belongsToMany(Currency::class, 'currency_change', 'change_id', 'currency_id')->withPivot("rate");
+        return $this->belongsToMany(Currency::class, 'currency_change', 'change_id', 'currency_id')->withPivot(['rate', 'budgeting_id', 'id']);
     }
 }

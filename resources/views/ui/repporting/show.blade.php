@@ -24,7 +24,7 @@
                     </ul>
                 </div>
                 <div class="col-md-4">
-                    <a href="{{ route('repportings', ['id' => $budgeting->id]) }}" class="btn btn-info">Retour</a>
+                    <a href="{{ route('repportings', ['id' => $budgeting->id]) }}" style="float:right;margin-right:20px" class=" btn btn-sm text-white btn-info">Retour</a>
                 </div>
             </div>
             <div class="row">

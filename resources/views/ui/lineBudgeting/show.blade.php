@@ -37,7 +37,7 @@
                         <div class="d-flex mb-4">
                             <div class="form-outline mr-4">
                                 <input value="{{ $lineBudgeting->amount }}" required="required" name="amount"
-                                    type="number" id="amount" class="form-control" />
+                                    type="number" step=0.01 id="amount" class="form-control" />
                                 <label class="form-label" for="amount">Montant</label>
                             </div>
                             <div class="text-danger"> - {{ $budgeting->currency->currency }}</div>

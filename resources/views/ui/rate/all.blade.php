@@ -17,6 +17,7 @@
                 </div>
             @endif
             <div class="page-breadcrumb">
+                <a href={{route('rates.home')}} style="width:90px;padding:1px; margin-left:2px" class="btn btn-secondary btn-sm"> Retour </a>
                 <div class="row align-items-center" style="margin-bottom: 10px">
                     <div class="col-md-5">
                         <h4 class="page-title">
@@ -32,7 +33,7 @@
             </div>
             <div class="row">
                 <div class="col-md-9">
-                    @if (count($currency->changes) > 0)
+                    @if (count($currency->changes()->where('budgeting_id', '=', $budgeting->id)->get()) > 0)
                         <table class="table table-sm">
                             <thead>
                                 <tr>
@@ -46,7 +47,7 @@
                                 @php
                                     $i = 0;
                                 @endphp
-                                @foreach ($currency->changes as $item)
+                                @foreach ($currency->changes()->where('budgeting_id', '=', $budgeting->id)->get() as $item)
                                     @php
                                         $i++;
                                     @endphp
@@ -55,9 +56,6 @@
                                         <td>{{ $item->currency }}</td>
                                         <td>{{ $item->pivot->rate }}</td>
                                         <td class="d-flex">
-                                            <a title="Afficher" style="color: #fff;margin-right: 5px"
-                                                href="{{ route('currencies.show', ['id' => $item->id]) }}"
-                                                class="btn btn-info btn-sm"><i class="fas fa-eye"></i></a>
                                             <form
                                                 onsubmit="return confirm('Voulez-vous vraiment supprimer cet enregistrement ?')"
                                                 action="{{ route('rates.delete', ['id' => $item->id]) }}" method="POST">
@@ -100,7 +98,7 @@
                             </div>
                         </form>
                     @else
-                        @if (count($currency->changes) > 0)
+                        @if (count($currency->changes()->where('budgeting_id', '=', $budgeting->id)->get()) > 0)
                             <div class="alert alert-info">
                                 Sélectionnez un élément sur le tableau pour visualiser
                             </div>
@@ -131,9 +129,9 @@
                             </select>
                         </div>
                         <div class="form-outline mb-4">
-                            <input required="required" name="rate" type="number" id="rate"
+                            <input required="required" step=0.01  name="rate" type="number" id="rate"
                                 class="form-control" />
-                            <label class="form-label" for="currency">Taux</label>
+                            <label class="form-label"for="currency">Taux</label>
                         </div>
                         <input type="hidden" name="budgeting" value="{{ $budgeting->id }}">
                         <div class="modal-footer">

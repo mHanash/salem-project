@@ -103,6 +103,7 @@ Route::middleware('auth')->group(function () {
     Route::post('budgeting', [BudgetingController::class, 'store'])->name('budgetings.store');
     Route::delete('budgeting/{id}', [BudgetingController::class, 'destroy'])->name('budgetings.destroy');
     Route::get('budgeting/{id}', [BudgetingController::class, 'show'])->name('budgetings.show');
+    Route::get('budgeting/export/budget/{id}', [BudgetingController::class, 'viewAll'])->name('budgetings.export');
     Route::post('budgeting/update/{id}', [BudgetingController::class, 'update'])->name('budgetings.update');
 
     Route::get('status', [StatusController::class, 'index'])->name('status');

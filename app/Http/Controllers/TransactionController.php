@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Beneficiary;
 use App\Models\Budgeting;
+use App\Models\Job;
 use App\Models\Rubrique;
 use App\Models\Status;
 use App\Models\Transaction;
+use App\Models\TypeBeneficiary;
 use App\Models\TypeRubrique;
 use Illuminate\Http\Request;
 
@@ -27,28 +29,32 @@ class TransactionController extends Controller
     }
     public function index(Request $request)
     {
+        $typeBeneficiaries = TypeBeneficiary::orderBy('name', 'ASC')->get();
+        $jobs = Job::orderBy('name', 'ASC')->get();
         $budgeting = Budgeting::find($request->id);
         $rubriques = $budgeting->rubriques()->orderBy('name', 'ASC')->get();
         $beneficiaries = Beneficiary::orderBy('name', 'ASC')->get();;
         if ($request->from || $request->to) {
             if ($request->from && !$request->to) {
-                $transactions = Transaction::where('budgeting_id', '=', $request->id)->where('date', '>=', $request->from)->get();
+                $transactions = Transaction::where('budgeting_id', '=', $request->id)->where('date', '>=', $request->from)->orderBy('date','ASC')->get();
             } else if (!$request->from && $request->to) {
-                $transactions = Transaction::where('budgeting_id', '=', $request->id)->where('date', '<=', $request->to)->get();
+                $transactions = Transaction::where('budgeting_id', '=', $request->id)->where('date', '<=', $request->to)->orderBy('date','ASC')->get();
             } else {
-                $transactions = Transaction::where('budgeting_id', '=', $request->id)->whereBetween('date', [$request->from, $request->to])->get();
+                $transactions = Transaction::where('budgeting_id', '=', $request->id)->whereBetween('date', [$request->from, $request->to])->orderBy('date','ASC')->get();
             }
         } else {
-            $transactions = Transaction::where('budgeting_id', '=', $request->id)->get();
+            $transactions = Transaction::where('budgeting_id', '=', $request->id)->where('date', '>=', date('Y-m-d'))->orderBy('date','ASC')->get();
         }
         return view('ui.transaction.all', [
             'transactions' => $transactions,
             'budgeting' => $budgeting,
             'rubriques' => $rubriques,
             'beneficiaries' => $beneficiaries,
-            'from' => $request->from,
+            'from' => ($request->from) ? $request->from : date('Y-m-d'),
             'to' => $request->to,
             'dateCurrent' => "",
+            'typeBeneficiaries' => $typeBeneficiaries,
+            'jobs' => $jobs,
         ]);
     }
 

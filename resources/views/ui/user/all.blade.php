@@ -132,6 +132,9 @@
                                 @endforeach
                             </select>
                         </div>
+                        <p style="font-size: 10px; margin-bottom:-2px;margin-top:2px">Le compte est créé avec un mot de
+                            passe par défaut : <span class="text-danger">saSalemFin</span>
+                        </p>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-mdb-dismiss="modal">Fermer</button>
                             <button type="submit" class="btn btn-primary">Enregistrer</button>

@@ -5,8 +5,6 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
-        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
     <style>
         table {
 
@@ -52,7 +50,7 @@
 
 <body>
 
-    <script type="text/php">
+    {{-- <script type="text/php">
         if ( isset($pdf) ) {
             $y = 570;
             $x = 400;
@@ -65,10 +63,10 @@
             $angle = 0.0;   //  default
             $pdf->page_text($x, $y, $text, $font, $size, $color, $word_space, $char_space, $angle);
         }
-    </script>
+    </script> --}}
     <div class="container-full">
         <div style="width:100%;padding: 0 10px; display:inline-block" class="">
-            <div style="height: 75px;float:left;width:40%;margin-right:30%" class="p-1 border border-dark rounded">
+            <div style="height: 75px;float:left;width:40%;margin-right:30%">
                 <span style="font-weight: bold;font-size: 13px">GRAND SEMINAIRE INTERDIOCESSAIN</span> <br /><i
                     style="font-size: 12px">SAINT CYPRIEN/KIKWIT</i><br>
                 <span style="font-size: 12px">B.P. /KKT</span>
@@ -82,14 +80,14 @@
         </div>
         <div style="text-align:center;">
             @if ($from && $to)
-                <span style="font-weight: bold">RAPPORT FINANCIER</span> Du {{ $from }} au {{ $to }}
+                <span style="font-weight: bold">RAPPORT FINANCIER (Rubriques planifiées)</span> Du {{ $from }} au {{ $to }}
             @else
-                <span style="font-weight: bold">RAPPORT FINANCIER</span> au {{ date('d/m/Y') }}
+                <span style="font-weight: bold">RAPPORT FINANCIER (Rubriques planifiées)</span> au {{ date('d/m/Y') }}
             @endif
         </div>
         <hr style="background-color: black">
 
-        <section class="mt-4" style="justify-content: center">
+        <section class="mt-4">
             <table style="width:20%; margin-bottom:10px">
                 <thead>
                     <tr>
@@ -152,8 +150,8 @@
                                     <td>{{ $item['name'] }}</td>
                                     @if ($item['state'] == 1)
                                         @php
-                                            $totPrevDebit += $item['amount'];
-                                            $totExecDebit += $item['amountExec'];
+                                            $totPrevCredit += $item['amount'];
+                                            $totExecCredit += $item['amountExec'];
                                         @endphp
                                         <td style="text-align:right">-</td>
                                         <td style="text-align:right">{{ number_format($item['amount'], 2, ',', '.') }}
@@ -171,8 +169,8 @@
                                         @endforeach
                                     @else
                                         @php
-                                            $totPrevCredit += $item['amount'];
-                                            $totExecCredit += $item['amountExec'];
+                                            $totPrevDebit += $item['amount'];
+                                            $totExecDebit += $item['amountExec'];
                                         @endphp
                                         <td style="text-align:right">{{ number_format($item['amount'], 2, ',', '.') }}
                                             {{ $budgeting->currency->currency }}</td>
@@ -194,8 +192,6 @@
                                 </tr>
                             @endforeach
                         @endif
-                    </tbody>
-                    <tfoot>
                         <tr>
                             <td colspan="2">TOTAL</td>
                             <td style="text-align:right">{{ number_format($totPrevDebit, 2, ',', '.') }}
@@ -214,18 +210,29 @@
                             @endforeach
                             <td></td>
                         </tr>
-                    </tfoot>
+                    </tbody>
                 </table>
-                <h3 style="color: red">Solde</h3>
+                <h4 style="color: red">Commentaire</h4>
                 <ul>
-                    <li>{{ number_format($totPrevDebit - $totExecCredit, 2, ',', '.') }}
-                        {{ $budgeting->currency->currency }}</li>
+                    <li>Somme crédit prévue : {{ number_format($totPrevCredit, 2, ',', '.') }}
+                        {{ $budgeting->currency->currency }}, Somme crédit
+                        exécutée : {{ number_format($totExecCredit, 2, ',', '.') }}
+                        {{ $budgeting->currency->currency }}, Ecart:
+                        {{ number_format($totPrevCredit - $totExecCredit, 2, ',', '.') }}</li>
+                    <li>Somme débit prévue : {{ number_format($totPrevDebit, 2, ',', '.') }}
+                        {{ $budgeting->currency->currency }}, Somme débit
+                        exécutée : {{ number_format($totExecDebit, 2, ',', '.') }}
+                        {{ $budgeting->currency->currency }}, Ecart:
+                        {{ number_format($totPrevDebit - $totExecDebit, 2, ',', '.') }}</li>
+                    <hr>
+                    <li>Etat de caisse : {{ number_format($totExecCredit - $totExecDebit, 2, ',', '.') }}
+                        {{ $budgeting->currency->currency }}
+                    </li>
                     @foreach ($toCurrencies as $item)
-                        <li>{{ number_format(($totPrevDebit - $totExecCredit) / $item->pivot->rate, 2, ',', '.') }}
+                        <li>{{ number_format(($totExecCredit - $totExecDebit) / $item->pivot->rate, 2, ',', '.') }}
                             {{ $item->currency }}</li>
                     @endforeach
                 </ul>
-
             </div>
         </section>
         <footer style="width:100%;position: absolute;bottom: 0px">

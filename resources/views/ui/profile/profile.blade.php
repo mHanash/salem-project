@@ -39,7 +39,7 @@
             </div>
             <div class="row">
                 <div class="col-md-4">
-                    <i class="far fa-user-circle fa-8x"></i>
+                    <i style="padding-left:10px" class="far fa-user-circle fa-8x"></i>
                 </div>
             </div>
             <div class="row" style="padding-top: 10px;padding-left:10px">
@@ -56,6 +56,9 @@
                         </li>
                         <li class="list-group-item">
                             <span class="text-primary">Poste : </span>{{ $user->beneficiary->job->name }}
+                        </li>
+                        <li class="list-group-item">
+                            <span class="text-primary">Email : </span>{{ $user->email }}
                         </li>
                     </ul>
                 </div>

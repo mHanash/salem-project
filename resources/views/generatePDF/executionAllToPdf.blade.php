@@ -17,12 +17,6 @@
             text-align: center !important;
         }
 
-        table tfoot tr td {
-            border: 1px solid black !important;
-            vertical-align: middle !important;
-            text-align: center !important;
-        }
-
         table tbody tr td {
             border: 1px solid black
         }
@@ -33,6 +27,14 @@
         }
 
         table thead tr {
+            border: 1px solid black
+        }
+
+        table tfoot tr {
+            border: 1px solid black
+        }
+
+        table tfoot tr td {
             border: 1px solid black
         }
 
@@ -77,13 +79,8 @@
             </div>
         </div>
         <div style="text-align:center;">
-            @if ($from && $to)
-                <span style="font-weight: bold">RAPPORT FINANCIER, (Rubriques non planifiées)</span> Du
-                {{ $from }} au {{ $to }}
-            @else
-                <span style="font-weight: bold">RAPPORT FINANCIER, (Rubriques non planifiées)</span> au
-                {{ date('d/m/Y') }}
-            @endif
+            <span style="font-weight: bold">EXECUTION BUDGETAIRE</span> : {{ $budgeting->startYear->year }} -
+            {{ $budgeting->endYear->year }}
         </div>
         <hr style="background-color: black">
 
@@ -109,9 +106,9 @@
                         <tr style="border: 1px solid black">
                             <th rowspan="2" style="width: 2%;" scope="col">#</th>
                             <th rowspan="2" style="width: 38%" scope="col">Libellé</th>
-                            <th colspan="{{ count($toCurrencies) + 1 }}" style="" scope="col">Execution Débit
+                            <th colspan="{{ count($toCurrencies) + 1 }}" style="" scope="col">Débit
                             </th>
-                            <th colspan="{{ count($toCurrencies) + 1 }}" style="" scope="col">Execution Crédit
+                            <th colspan="{{ count($toCurrencies) + 1 }}" style="" scope="col">Crédit
                             </th>
                         <tr style="border: 1px solid black">
                             <th style="text-align:center;width: 10%">{{ $budgeting->currency->currency }}</th>
@@ -129,7 +126,6 @@
                         @if ($datas)
                             @php
                                 $i = 0;
-                                
                                 $totExecDebit = 0;
                                 $totExecCredit = 0;
                             @endphp
@@ -173,27 +169,27 @@
                                     @endif
                                 </tr>
                             @endforeach
-                            <tr>
-                                <td colspan="2">TOTAL</td>
-                                <td style="text-align:right">{{ number_format($totExecDebit, 2, ',', '.') }} </td>
-                                @foreach ($toCurrencies as $item)
-                                    <td style="text-align:right">
-                                        {{ number_format($totExecDebit / $item->pivot->rate, 2, ',', '.') }}</td>
-                                @endforeach
-                                <td style="text-align:right">{{ number_format($totExecCredit, 2, ',', '.') }}</td>
-                                @foreach ($toCurrencies as $item)
-                                    <td style="text-align:right">
-                                        {{ number_format($totExecCredit / $item->pivot->rate, 2, ',', '.') }}</td>
-                                @endforeach
-                            </tr>
                         @endif
+                        <tr>
+                            <td colspan="2">TOTAL</td>
+                            <td style="text-align:right">{{ number_format($totExecDebit, 2, ',', '.') }} </td>
+                            @foreach ($toCurrencies as $item)
+                                <td style="text-align:right">
+                                    {{ number_format($totExecDebit / $item->pivot->rate, 2, ',', '.') }}</td>
+                            @endforeach
+                            <td style="text-align:right">{{ number_format($totExecCredit, 2, ',', '.') }}</td>
+                            @foreach ($toCurrencies as $item)
+                                <td style="text-align:right">
+                                    {{ number_format($totExecCredit / $item->pivot->rate, 2, ',', '.') }}</td>
+                            @endforeach
+                        </tr>
                     </tbody>
                 </table>
                 <h4 style="color: red">Commentaire</h4>
                 <ul>
-                    <li>Total crédit : {{ number_format($totExecCredit, 2, ',', '.') }}
+                    <li>Somme crédit : {{ number_format($totExecCredit, 2, ',', '.') }}
                         {{ $budgeting->currency->currency }}</li>
-                    <li>Total débit : {{ number_format($totExecDebit, 2, ',', '.') }}
+                    <li>Somme débit : {{ number_format($totExecDebit, 2, ',', '.') }}
                         {{ $budgeting->currency->currency }}</li>
                     <hr>
                     <li>Etat de caisse : {{ number_format($totExecCredit - $totExecDebit, 2, ',', '.') }}
