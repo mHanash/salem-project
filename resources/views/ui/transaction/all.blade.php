@@ -4,7 +4,6 @@
     @php
         $admin = false;
         $finan = false;
-        $eco = false;
     @endphp
     @foreach (Auth::user()->roles as $role)
         @if ($role->name == 'ADMIN')
@@ -15,11 +14,6 @@
         @if ($role->name == 'FINANCIAL')
             @php
                 $finan = true;
-            @endphp
-        @endif
-        @if ($role->name == 'ECONOMAT')
-            @php
-                $eco = true;
             @endphp
         @endif
     @endforeach
@@ -41,9 +35,9 @@
             <div class="page-breadcrumb">
                 <form action="{{ route('transactions', ['id' => $budgeting->id]) }}" method="get">
                     <div class="row align-items-center" style="margin-bottom: 5px">
-                        <div class="col-md-6 pt-1">
+                        <div class="pt-1 col-md-6">
                             <a style="width:63px;font-size:11px;font-weight:bold"
-                                class="btn text-center text-light text-bg-secondary d-flex nav-link"
+                                class="text-center btn text-light text-bg-secondary d-flex nav-link"
                                 href="{{ route('transactions.home') }}">
                                 < Retour</a>
                                     <h5 class="page-title text-primary">
@@ -51,13 +45,13 @@
                                         {{ $budgeting->endYear->year }}
                                     </h5>
                         </div>
-                        <div class="col-md-4 pt-1 pb-1">
+                        <div class="pt-1 pb-1 col-md-4">
                             <div class="input-group input-daterange">
                                 <input value="{{ $from }}" name='from' type="date" class="form-control">
                                 <input value="{{ $to }}" name='to' type="date" class="form-control">
                             </div>
                         </div>
-                        <div class="col-md-2 pt-1 pb-1">
+                        <div class="pt-1 pb-1 col-md-2">
                             <button type="submit" href="" style="color: #fff" class="btn btn-sm btn-info"><i
                                     class="fas fa-filter"></i> Filter</button>
                         </div>
@@ -65,13 +59,13 @@
                 </form>
                 <div class="row align-items-center" style="margin-bottom: 10px">
                     <div class="col-md-6">
-                        <button data-mdb-toggle="modal" data-mdb-target="#addRec" style="float: right" type="button"
-                            class=" btn-sm btn btn-primary"><i class="fas fa-plus"></i>
+                        <button title="Raccourci ALT + A" id="addRecette" data-mdb-toggle="modal" data-mdb-target="#addRec"
+                            style="float: right" type="button" class=" btn-sm btn btn-primary"><i class="fas fa-plus"></i>
                             Ajouter recette</button>
                     </div>
                     <div class="col-md-6">
-                        <button data-mdb-toggle="modal" data-mdb-target="#addDep" style="float: right" type="button"
-                            class="btn btn-sm btn-danger"><i class="fas fa-plus"></i>
+                        <button title="Raccourci ALT + Z" id="addDepense" data-mdb-toggle="modal" data-mdb-target="#addDep"
+                            style="float: right" type="button" class="btn btn-sm btn-danger"><i class="fas fa-plus"></i>
                             Ajouter dépense</button>
                     </div>
 
@@ -111,7 +105,7 @@
                                                     <a title="Afficher" style="color: #fff;margin-right: 5px"
                                                         href="{{ route('transactions.show', ['id' => $item->id]) }}"
                                                         class="btn btn-info btn-sm"><i class="fas fa-eye"></i></a>
-                                                    @if ($eco)
+                                                    @if ($admin)
                                                         <form
                                                             onsubmit="return confirm('Voulez-vous vraiment supprimer cet enregistrement ?')"
                                                             action="{{ route('transactions.destroy', ['id' => $item->id]) }}"
@@ -179,7 +173,7 @@
                                                     <a title="Afficher" style="color: #fff;margin-right: 5px"
                                                         href="{{ route('transactions.show', ['id' => $item->id]) }}"
                                                         class="btn btn-info btn-sm"><i class="fas fa-eye"></i></a>
-                                                    @if ($eco)
+                                                    @if ($admin)
                                                         <form
                                                             onsubmit="return confirm('Voulez-vous vraiment supprimer cet enregistrement ?')"
                                                             action="{{ route('transactions.destroy', ['id' => $item->id]) }}"
@@ -229,18 +223,18 @@
                     <form method="POST" action="{{ route('transactions.store') }}">
                         <!-- Name input -->
                         @csrf
-                        <div class="d-flex mb-4">
-                            <div class="form-outline mr-4">
+                        <div class="mb-4 d-flex">
+                            <div class="mr-4 form-outline">
                                 <input required="required" value="{{ session()->get('dateCurrent') }}" name="date"
                                     type="date" id="date" class="form-control" />
                             </div>
                         </div>
-                        <div class="form-outline mb-4">
-                            <textarea rows="3" required="required" name="description" id="description" class="form-control"></textarea>
+                        <div class="mb-4 form-outline">
+                            <textarea rows="3" required="required" name="description" id="descriptionREC" class="form-control"></textarea>
                             <label class="form-label" for="description">Libellé</label>
                         </div>
-                        <div class="d-flex mb-4">
-                            <div class="form-outline mr-4">
+                        <div class="mb-4 d-flex">
+                            <div class="mr-4 form-outline">
                                 <input required="required" step=0.01 name="amount" type="number" id="amount"
                                     class="form-control" />
                                 <label class="form-label" for="amount">Montant</label>
@@ -288,18 +282,18 @@
                     <form method="POST" action="{{ route('transactions.store') }}">
                         <!-- Name input -->
                         @csrf
-                        <div class="d-flex mb-4">
-                            <div class="form-outline mr-4">
+                        <div class="mb-4 d-flex">
+                            <div class="mr-4 form-outline">
                                 <input required="required" value="{{ session()->get('dateCurrent') }}" name="date"
                                     type="date" id="date" class="form-control" />
                             </div>
                         </div>
-                        <div class="form-outline mb-4">
-                            <textarea rows="3" required="required" name="description" id="description" class="form-control"></textarea>
+                        <div class="mb-4 form-outline">
+                            <textarea rows="3" required="required" name="description" id="descriptionDEP" class="form-control"></textarea>
                             <label class="form-label" for="description">Libellé</label>
                         </div>
-                        <div class="d-flex mb-4">
-                            <div class="form-outline mr-4">
+                        <div class="mb-4 d-flex">
+                            <div class="mr-4 form-outline">
                                 <input required="required" step=0.01 name="amount" type="number" id="amount"
                                     class="form-control" />
                                 <label class="form-label"for="amount">Montant</label>
@@ -351,16 +345,16 @@
                     <form method="POST" action="{{ route('beneficiaries.store') }}">
                         <!-- Name input -->
                         @csrf
-                        <div class="form-outline mb-4">
+                        <div class="mb-4 form-outline">
                             <input required="required" name="name" type="text" id="name"
                                 class="form-control" />
                             <label class="form-label" for="name">Nom</label>
                         </div>
-                        <div class="form-outline mb-4">
+                        <div class="mb-4 form-outline">
                             <input name="lastname" type="text" id="lastname" class="form-control" />
                             <label class="form-label" for="lastname">Postnom</label>
                         </div>
-                        <div class="form-outline mb-4">
+                        <div class="mb-4 form-outline">
                             <input required="required" name="firstname" type="text" id="firstname"
                                 class="form-control" />
                             <label class="form-label" for="firstname">Prenom</label>
@@ -391,4 +385,21 @@
             </div>
         </div>
     </div>
+    <script>
+        let buttonDepense = document.getElementById("addDepense");
+        let buttonRecette = document.getElementById("addRecette");
+        let textareaDEP = document.getElementById("descriptionDEP");
+        let textareaREC = document.getElementById("descriptionREC");
+        window.addEventListener("keydown", function(event) {
+            if (event.altKey && event.keyCode === 90) { // Alt + Z
+                buttonDepense.click();
+                textareaDEP.focus();
+
+            }
+            if (event.altKey && event.keyCode === 65) { // Alt + A
+                buttonRecette.click();
+                textareaREC.focus();
+            }
+        });
+    </script>
 @endsection

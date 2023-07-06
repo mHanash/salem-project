@@ -53,7 +53,6 @@ class BudgetingController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->rubrique);
         if ($budgeting = Budgeting::create([
             'description' => $request->description,
             'start_year_id' => $request->startYear,
@@ -143,7 +142,7 @@ class BudgetingController extends Controller
             return redirect()->route('budgetings')->with('fail', 'Une erreur est survenue lors de la suppression');
         }
     }
-    
+
     public function viewAll(Request $request)
     {
         $budgeting = Budgeting::find($request->id);
@@ -173,6 +172,6 @@ class BudgetingController extends Controller
 
         ])->setPaper('a4', 'landscape')->set_option("isPhpEnabled", true);
         // return $pdf->stream();
-        return $pdf->download(date('U-Y-m-d') . "-" . \Str::slug('Rapport Budget -').$budgeting->startYear->year."-".$budgeting->endYear->year . ".pdf");
+        return $pdf->download(date('U-Y-m-d') . "-" . \Str::slug('Rapport Budget -') . $budgeting->startYear->year . "-" . $budgeting->endYear->year . ".pdf");
     }
 }
